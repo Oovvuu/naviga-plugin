@@ -1,0 +1,36 @@
+{
+    "name": "oovvuu-naviga-plugin",
+    "version": "0.1",
+    "description": "Oovvuu Naviga plugin",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "webpack-dev-server --config webpack/webpack.dev.js --hot --progress --watch",
+        "build": "webpack --config webpack/webpack.prod.js --progress"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.8.4",
+        "@babel/core": "^7.9.0",
+        "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+        "@babel/plugin-transform-async-to-generator": "^7.4.4",
+        "@babel/preset-env": "^7.4.5",
+        "babel-loader": "^8.0.6",
+        "css-loader": "^3.0.0",
+        "eslint": "^6.0.1",
+        "eslint-loader": "^2.1.2",
+        "express": "^4.17.1",
+        "mini-css-extract-plugin": "^0.7.0",
+        "node-sass": "^4.13.1",
+        "optimize-css-assets-webpack-plugin": "^5.0.1",
+        "sass-loader": "^7.1.0",
+        "string-replace-loader": "^2.2.0",
+        "style-loader": "^0.23.1",
+        "terser-webpack-plugin": "^1.3.0",
+        "webpack": "^4.42.0",
+        "webpack-cli": "^3.3.5",
+        "webpack-dev-server": "^3.10.3",
+        "webpack-merge": "^4.2.1"
+    },
+    "dependencies": {
+        "@auth0/auth0-spa-js": "^1.13.6"
+    }
+}
