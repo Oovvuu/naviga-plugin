@@ -1,6 +1,7 @@
 import {Component} from 'substance'
 import {UIButton} from 'writer'
 import { Auth0Client } from '@auth0/auth0-spa-js'
+import queryString from 'query-string'
 
 class OovvuuNavigaPluginComponent extends Component {
 
@@ -48,8 +49,26 @@ class OovvuuNavigaPluginComponent extends Component {
             client_secret: 'cX0i2MONG2rJcV3bCf04a1870Jw14V0TqsOKNfBHu_8QwJd8Ix8PU7GDkgaVmB-J',
             audience: 'https://api.prod.oovvuu.io',
             scope: 'offline_access openid',
-            useRefreshTokens: true,
+            redirect_uri: 'https://writer.dev.developer.infomaker.io/?action=oovvuu-auth',
         });
+
+        const queryParams = queryString.parse(window.location.search);
+        console.log(queryParams);
+
+        // Auth callback.
+        if (
+            undefined !== queryParams.action
+            && 'oovvuu-auth' === queryParams.action
+        ) {
+            auth0.handleRedirectCallback().then(redirectResult => {
+                console.log(redirectResult);
+
+                //logged in. you can get the user profile like this:
+                auth0.getUser().then(user => {
+                    console.log(user);
+                });
+            });
+        }
 
         el.append([
             $$('h2').append(
@@ -58,8 +77,8 @@ class OovvuuNavigaPluginComponent extends Component {
             $$(UIButton, {
                 label: this.getLabel('Login')
             }).on('click', async () => {
-                await auth0.loginWithRedirect({
-                    redirect_uri: 'https://writer.dev.developer.infomaker.io/?action=oovvuu-auth'
+                await auth0.loginWithRedirect().catch(() => {
+                    console.log('Error logging in Oovvuu user');
                 });
             }),
             $$(UIButton, {
