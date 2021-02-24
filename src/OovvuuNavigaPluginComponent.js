@@ -2,7 +2,7 @@ import {Component} from 'substance'
 import {UIButton} from 'writer'
 import { Auth0Client } from '@auth0/auth0-spa-js'
 
-class DevKitComponent extends Component {
+class OovvuuNavigaPluginComponent extends Component {
 
     /**
      * Constructor
@@ -21,20 +21,16 @@ class DevKitComponent extends Component {
 
     /**
      * Return the inital component state before rendering
-     *
-     * @returns {{clickCount: number}}
      */
     getInitialState() {
-        return {
-            clickCount: 0
-        }
+        return {}
     }
 
     /**
      * Do something after the first render
      */
     didMount() {
-        console.log('Devkit plugin rendered')
+        console.log('Oovvuu plugin rendered')
     }
 
     /**
@@ -45,7 +41,6 @@ class DevKitComponent extends Component {
      */
     render($$) {
         const el = $$('div')
-            .addClass('devkit')
 
         const auth0 = new Auth0Client({
             domain: 'oovvuu-production.au.auth0.com',
@@ -78,4 +73,4 @@ class DevKitComponent extends Component {
     }
 }
 
-export {DevKitComponent}
+export {OovvuuNavigaPluginComponent}

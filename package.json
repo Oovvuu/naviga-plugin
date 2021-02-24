@@ -1,6 +1,6 @@
 {
     "name": "oovvuu-naviga-plugin",
-    "version": "0.1",
+    "version": "1.0.0",
     "description": "Oovvuu Naviga plugin",
     "main": "src/index.js",
     "scripts": {

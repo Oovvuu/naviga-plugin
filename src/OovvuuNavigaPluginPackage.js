@@ -8,7 +8,7 @@ import {OovvuuConverter} from './converters/OovvuuConverter.js'
 
 export default {
     name: 'oovvuu',
-    id: 'oovvuu.naviga',
+    id: 'en.infomaker.oovvuu',
 
     // The configure() is called by the writer when it wants the
     // plugin to initalize itself and its different parts.
