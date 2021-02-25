@@ -1,6 +1,6 @@
 import {Component} from 'substance'
 import {UIButton} from 'writer'
-import auth0 from './api/index.js'
+import auth0 from './api/auth0.js'
 
 class OovvuuNavigaPluginComponent extends Component {
 
