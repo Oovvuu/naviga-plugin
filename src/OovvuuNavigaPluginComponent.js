@@ -1,7 +1,6 @@
 import {Component} from 'substance'
 import {UIButton} from 'writer'
-import { Auth0Client } from '@auth0/auth0-spa-js'
-import queryString from 'query-string'
+import auth0 from './api/index.js'
 
 class OovvuuNavigaPluginComponent extends Component {
 
@@ -14,27 +13,6 @@ class OovvuuNavigaPluginComponent extends Component {
     }
 
     /**
-     * Method called when component is disposed and removed from DOM
-     */
-    dispose() {
-        // Perfect place to remove eventlisteners etc
-    }
-
-    /**
-     * Return the inital component state before rendering
-     */
-    getInitialState() {
-        return {}
-    }
-
-    /**
-     * Do something after the first render
-     */
-    didMount() {
-        console.log('Oovvuu plugin rendered')
-    }
-
-    /**
      * Render method is called whenever there's a change in state or props
      *
      * @param $$
@@ -43,26 +21,11 @@ class OovvuuNavigaPluginComponent extends Component {
     render($$) {
         const el = $$('div')
 
-        const auth0 = new Auth0Client({
-            domain: 'oovvuu-production.au.auth0.com',
-            client_id: 'aZfpyRNB2wViuceV3Q87638Gp5TeI0s7',
-            client_secret: 'cX0i2MONG2rJcV3bCf04a1870Jw14V0TqsOKNfBHu_8QwJd8Ix8PU7GDkgaVmB-J',
-            audience: 'https://api.prod.oovvuu.io',
-            redirect_uri: 'https://writer.dev.developer.infomaker.io/?action=oovvuu-auth',
+        auth0.getTokenSilently().then((token) => {
+            console.log(token);
+        }).catch((error) => {
+            console.log(error)
         });
-
-        const queryParams = queryString.parse(window.location.search);
-
-        // Auth callback.
-        if (
-            undefined !== queryParams.action
-            && 'oovvuu-auth' === queryParams.action
-        ) {
-            auth0.handleRedirectCallback().then( async () => {
-                // Redirect to the main URL.
-                window.location = 'https://writer.dev.developer.infomaker.io/';
-            });
-        }
 
         el.append([
             $$('h2').append(
@@ -70,15 +33,8 @@ class OovvuuNavigaPluginComponent extends Component {
             ),
             $$(UIButton, {
                 label: this.getLabel('Login')
-            }).on('click', async () => {
-                await auth0.loginWithRedirect().catch(() => {
-                    console.log('Error logging in Oovvuu user');
-                });
-            }),
-            $$(UIButton, {
-                label: this.getLabel('Logout')
-            }).on('click', async () => {
-                auth0.logout();
+            }).on('click', async() => {
+                await auth0.loginWithRedirect();
             }),
             $$(UIButton, {
                 label: this.getLabel('Add Embed')

@@ -15,7 +15,7 @@ export default {
     configure: function(config, pluginConfig) {
 
         // Add plugin to main sidebar (can be overriden in plugin config)
-        config.addToSidebar('main', pluginConfig, OovvuuNavigaPluginComponent)
+        config.addToSidebar('Oovvuu', pluginConfig, OovvuuNavigaPluginComponent)
         config.addContentMenuTopTool('oovvuu.insert', OovvuuTool)
         config.addCommand('oovvuu.insert', OovvuuCommand)
         config.addNode(OovvuuNode)
