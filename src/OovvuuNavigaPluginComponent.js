@@ -48,25 +48,19 @@ class OovvuuNavigaPluginComponent extends Component {
             client_id: 'aZfpyRNB2wViuceV3Q87638Gp5TeI0s7',
             client_secret: 'cX0i2MONG2rJcV3bCf04a1870Jw14V0TqsOKNfBHu_8QwJd8Ix8PU7GDkgaVmB-J',
             audience: 'https://api.prod.oovvuu.io',
-            scope: 'offline_access openid',
             redirect_uri: 'https://writer.dev.developer.infomaker.io/?action=oovvuu-auth',
         });
 
         const queryParams = queryString.parse(window.location.search);
-        console.log(queryParams);
 
         // Auth callback.
         if (
             undefined !== queryParams.action
             && 'oovvuu-auth' === queryParams.action
         ) {
-            auth0.handleRedirectCallback().then(redirectResult => {
-                console.log(redirectResult);
-
-                //logged in. you can get the user profile like this:
-                auth0.getUser().then(user => {
-                    console.log(user);
-                });
+            auth0.handleRedirectCallback().then( async () => {
+                // Redirect to the main URL.
+                window.location = 'https://writer.dev.developer.infomaker.io/';
             });
         }
 
@@ -80,6 +74,11 @@ class OovvuuNavigaPluginComponent extends Component {
                 await auth0.loginWithRedirect().catch(() => {
                     console.log('Error logging in Oovvuu user');
                 });
+            }),
+            $$(UIButton, {
+                label: this.getLabel('Logout')
+            }).on('click', async () => {
+                auth0.logout();
             }),
             $$(UIButton, {
                 label: this.getLabel('Add Embed')
