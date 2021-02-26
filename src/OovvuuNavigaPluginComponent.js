@@ -13,37 +13,71 @@ class OovvuuNavigaPluginComponent extends Component {
     }
 
     /**
+     * Return the inital component state before rendering
+     *
+     * @returns {{clickCount: number}}
+     */
+    getInitialState() {
+        return {
+            authenticated: null
+        }
+    }
+
+    /**
+     * Do something after the first render
+     */
+    didMount() {
+        // Check if the user is authenticated.
+        auth0.getTokenSilently().then(() => {
+            this.extendState({
+                authenticated: true
+            })
+        }).catch(() => {
+            this.extendState({
+                authenticated: false
+            })
+        });
+    }
+
+    /**
      * Render method is called whenever there's a change in state or props
      *
      * @param $$
      * @returns {*}
      */
     render($$) {
-        const el = $$('div')
+        const container = $$('div');
+        const title = $$('h2').append(
+            this.getLabel('Oovvuu Plugin')
+        );
 
-        auth0.getTokenSilently().then((token) => {
-            console.log(token);
-        }).catch((error) => {
-            console.log(error)
-        });
+        // Add the title.
+        container.append(title);
 
-        el.append([
-            $$('h2').append(
-                this.getLabel('Oovvuu Plugin')
-            ),
-            $$(UIButton, {
-                label: this.getLabel('Login')
-            }).on('click', async() => {
-                await auth0.loginWithRedirect();
-            }),
-            $$(UIButton, {
-                label: this.getLabel('Add Embed')
-            }).on('click', async () => {
-                this.context.api.editorSession.executeCommand('oovvuu.insert', {title: 'Title', embedId: 'test'})
-            })
-        ])
+        // Not authenticated.
+        if ( false === this.state.authenticated ) {
+            container.append(
+                $$(UIButton, {
+                    label: this.getLabel('Login')
+                }).on('click', async() => {
+                    await auth0.loginWithRedirect();
+                })
+            );
+        } else if ( true === this.state.authenticated) {
+            container.append(
+                $$(UIButton, {
+                    label: this.getLabel('Add Embed')
+                }).on('click', async () => {
+                    this.context.api.editorSession.executeCommand('oovvuu.insert', {title: 'Title', embedId: 'test'})
+                })
+            );
+        } else {
+            container.append(
+                $$('p').text('Loading user...')
+            );
+        }
 
-        return el
+        return container
     }
 }
 
