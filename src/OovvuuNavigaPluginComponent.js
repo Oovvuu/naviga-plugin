@@ -58,19 +58,30 @@ class OovvuuNavigaPluginComponent extends Component {
         if ( false === this.state.authenticated ) {
             container.append(
                 $$(UIButton, {
-                    label: this.getLabel('Login')
+                    label: this.getLabel('Login'),
+                    type: 'default'
                 }).on('click', async() => {
                     await auth0.loginWithRedirect();
                 })
             );
         } else if ( true === this.state.authenticated) {
-            container.append(
+            container.append([
                 $$(UIButton, {
                     label: this.getLabel('Add Embed')
                 }).on('click', async () => {
                     this.context.api.editorSession.executeCommand('oovvuu.insert', {title: 'Title', embedId: 'test'})
-                })
-            );
+                }),
+                $$('div').append([
+                    $$(UIButton, {
+                        label: this.getLabel('Logout'),
+                        type: 'alert outlined'
+                    }).on('click', async () => {
+                        auth0.logout({
+                            returnTo: window.location.origin
+                        });
+                    })
+                ])
+            ]);
         } else {
             container.append(
                 $$('p').text('Loading user...')
