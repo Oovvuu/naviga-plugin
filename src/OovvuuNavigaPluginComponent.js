@@ -30,17 +30,14 @@ class OovvuuNavigaPluginComponent extends Component {
      * Do something after the first render
      */
     didMount() {
-        console.log('loading user');
         // Check if the user is authenticated.
         authService.isAuthenticated()
-            .then((token) => {
-                console.log('token', token);
+            .then(() => {
                 this.extendState({
                     authenticated: true
                 })
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
                 this.extendState({
                     authenticated: false
                 })
@@ -55,8 +52,6 @@ class OovvuuNavigaPluginComponent extends Component {
      */
     getComponents($$) {
         let components = null;
-
-        console.log(this.state.authenticated );
 
         // Not authenticated.
         if ( false === this.state.authenticated ) {
