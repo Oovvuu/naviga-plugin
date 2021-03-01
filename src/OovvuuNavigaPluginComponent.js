@@ -42,6 +42,46 @@ class OovvuuNavigaPluginComponent extends Component {
     }
 
     /**
+     * Get based components based on authentication.
+     *
+     * @param $$
+     * @return Components.
+     */
+    getComponents($$) {
+        let components = null;
+
+        // Not authenticated.
+        if ( false === this.state.authenticated ) {
+            components = $$(UIButton, {
+                label: this.getLabel('Login'),
+                type: 'default'
+            }).on('click', async() => {
+                authService.login();
+            });
+        } else if ( true === this.state.authenticated) {
+            components = [
+                $$(UIButton, {
+                    label: this.getLabel('Add Embed')
+                }).on('click', async () => {
+                    this.context.api.editorSession.executeCommand('oovvuu.insert', {title: 'Title', embedId: 'test'})
+                }),
+                $$('div').append([
+                    $$(UIButton, {
+                        label: this.getLabel('Logout'),
+                        type: 'alert outlined'
+                    }).on('click', async () => {
+                        authService.logout();
+                    })
+                ])
+            ];
+        } else {
+            components = $$('p').text('Loading user...');
+        }
+
+        return components;
+    }
+
+    /**
      * Render method is called whenever there's a change in state or props
      *
      * @param $$
@@ -56,36 +96,11 @@ class OovvuuNavigaPluginComponent extends Component {
         // Add the title.
         container.append(title);
 
-        // Not authenticated.
-        if ( false === this.state.authenticated ) {
-            container.append(
-                $$(UIButton, {
-                    label: this.getLabel('Login'),
-                    type: 'default'
-                }).on('click', async() => {
-                    authService.login();
-                })
-            );
-        } else if ( true === this.state.authenticated) {
-            container.append([
-                $$(UIButton, {
-                    label: this.getLabel('Add Embed')
-                }).on('click', async () => {
-                    this.context.api.editorSession.executeCommand('oovvuu.insert', {title: 'Title', embedId: 'test'})
-                }),
-                $$('div').append([
-                    $$(UIButton, {
-                        label: this.getLabel('Logout'),
-                        type: 'alert outlined'
-                    }).on('click', async () => {
-                        authService.logout();
-                    })
-                ])
-            ]);
-        } else {
-            container.append(
-                $$('p').text('Loading user...')
-            );
+        // Add components.
+        const components = this.getComponents($$);
+
+        if (components) {
+            container.append(components);
         }
 
         return container
