@@ -1,6 +1,6 @@
 import {Component} from 'substance'
 import {UIButton} from 'writer'
-import auth0 from './api/auth0.js'
+import authService from './api/auth.js'
 
 class OovvuuNavigaPluginComponent extends Component {
 
@@ -28,15 +28,17 @@ class OovvuuNavigaPluginComponent extends Component {
      */
     didMount() {
         // Check if the user is authenticated.
-        auth0.getTokenSilently().then(() => {
-            this.extendState({
-                authenticated: true
+        authService.isAuthenticated()
+            .then(() => {
+                this.extendState({
+                    authenticated: true
+                })
             })
-        }).catch(() => {
-            this.extendState({
-                authenticated: false
-            })
-        });
+            .catch(() => {
+                this.extendState({
+                    authenticated: false
+                })
+            });
     }
 
     /**
@@ -61,7 +63,7 @@ class OovvuuNavigaPluginComponent extends Component {
                     label: this.getLabel('Login'),
                     type: 'default'
                 }).on('click', async() => {
-                    await auth0.loginWithRedirect();
+                    await authService.login();
                 })
             );
         } else if ( true === this.state.authenticated) {
@@ -76,9 +78,7 @@ class OovvuuNavigaPluginComponent extends Component {
                         label: this.getLabel('Logout'),
                         type: 'alert outlined'
                     }).on('click', async () => {
-                        auth0.logout({
-                            returnTo: window.location.origin
-                        });
+                        authService.logout();
                     })
                 ])
             ]);

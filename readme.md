@@ -14,6 +14,21 @@ The test site is an environment that is hosted by Naviga where we can perform lo
 
 Follow [this guide](https://docs.navigaglobal.com/writer/developer-guide/index/quickstart#4-add-the-plugin-to-the-local-configuration) to install the plugin on the test site.
 
+### Setup Auth0 Config
+The Naviga Writer does not provide any persistent storage, therefore this plugin only has access to client-side storage. Oovvuu uses Auth0 to perform user authentication and an Auth0 app needs to be created by the Oovvuu team to connect with the Oovvuu API. Once this app is setup you can add those credentials to the git ignored `src/api/config.js`. This is the config the plugin will use to create the Auth0 Client. Here is an example config file.
+
+```js
+export default {
+    domain: 'oovvuu-production.au.auth0.com',
+    client_id: 'xxxxxxxxx', // Provided by Oovvuu team when the app is created.
+    client_secret: 'xxxxxxxxx', // Provided by Oovvuu team when the app is created.
+    audience: 'https://api.prod.oovvuu.io',
+    redirect_uri: 'xxxxxxxxx', // URL to handle the final authentication handshake.
+    scope: 'offline_access openid',
+    useRefreshTokens: true,
+}
+```
+
 ### Builds
 
 1. Install node modules `npm ci`

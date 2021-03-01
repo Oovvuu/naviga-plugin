@@ -16,13 +16,21 @@ domReady(() => {
 
     if (
         undefined !== queryParams.action
-    && 'oovvuu-auth' === queryParams.action
+      && 'oovvuu-auth' === queryParams.action
     ) {
         auth0.handleRedirectCallback().then(async () => {
             // Removes auth params.
             history.pushState({}, '', '/');
         });
     }
-});
+})
 
-export default auth0;
+const authService = {
+    login: auth0.loginWithRedirect(),
+    logout: auth0.logout({
+        returnTo: window.location.origin
+    }),
+    isAuthenticated: auth0.getTokenSilently(),
+}
+
+export default authService;
