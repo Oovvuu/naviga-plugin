@@ -10,9 +10,6 @@ class OovvuuNavigaPluginComponent extends Component {
      */
     constructor(...args) {
         super(...args)
-
-        // Handle auth callback.
-        authService.handleAuthCallback();
     }
 
     /**
@@ -30,6 +27,10 @@ class OovvuuNavigaPluginComponent extends Component {
      * Do something after the first render
      */
     didMount() {
+
+        // Handle auth callback.
+        authService.handleAuthCallback()
+
         // Check if the user is authenticated.
         authService.isAuthenticated()
             .then(() => {
