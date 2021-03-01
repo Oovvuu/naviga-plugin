@@ -10,6 +10,9 @@ class OovvuuNavigaPluginComponent extends Component {
      */
     constructor(...args) {
         super(...args)
+
+        // Handle auth callback.
+        authService.handleAuthCallback();
     }
 
     /**
@@ -27,14 +30,17 @@ class OovvuuNavigaPluginComponent extends Component {
      * Do something after the first render
      */
     didMount() {
+        console.log('loading user');
         // Check if the user is authenticated.
         authService.isAuthenticated()
-            .then(() => {
+            .then((token) => {
+                console.log('token', token);
                 this.extendState({
                     authenticated: true
                 })
             })
-            .catch(() => {
+            .catch((error) => {
+                console.log(error);
                 this.extendState({
                     authenticated: false
                 })
@@ -50,6 +56,8 @@ class OovvuuNavigaPluginComponent extends Component {
     getComponents($$) {
         let components = null;
 
+        console.log(this.state.authenticated );
+
         // Not authenticated.
         if ( false === this.state.authenticated ) {
             components = $$(UIButton, {
@@ -58,7 +66,7 @@ class OovvuuNavigaPluginComponent extends Component {
             }).on('click', async() => {
                 authService.login();
             });
-        } else if ( true === this.state.authenticated) {
+        } else if ( true === this.state.authenticated ) {
             components = [
                 $$(UIButton, {
                     label: this.getLabel('Add Embed')
@@ -74,7 +82,7 @@ class OovvuuNavigaPluginComponent extends Component {
                     })
                 ])
             ];
-        } else {
+        } else if ( null === this.state.authenticated ) {
             components = $$('p').text('Loading user...');
         }
 

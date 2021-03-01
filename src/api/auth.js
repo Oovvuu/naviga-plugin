@@ -1,38 +1,33 @@
-import { Auth0Client } from '@auth0/auth0-spa-js'
-import config from './config.js'
+import authClient from './authClient.js'
 import queryString from 'query-string'
 import domReady from '../utils/domReady.js'
 
-const auth0 = new Auth0Client(config);
-
-/**
- * Handle the authentication callback.
- */
-domReady(() => {
-    const queryParams = queryString.parse(window.location.search);
-
-    if (
-        undefined !== queryParams.action
-        && 'oovvuu-auth' === queryParams.action
-    ) {
-        auth0.handleRedirectCallback().then(async () => {
-            // Removes auth params.
-            history.pushState({}, '', '/');
-        });
-    }
-})
-
 const authService = {
     login: async () => {
-        await auth0.loginWithRedirect()
+        await authClient.loginWithRedirect()
     },
     logout: async () => {
-        auth0.logout({
+        authClient.logout({
             returnTo: window.location.origin
         })
     },
-    isAuthenticated: async () => {
-        auth0.getTokenSilently()
+    handleAuthCallback: () => {
+        domReady(() => {
+            const queryParams = queryString.parse(window.location.search);
+
+            if (
+                undefined !== queryParams.action
+              && 'oovvuu-auth' === queryParams.action
+            ) {
+                authClient.handleRedirectCallback().then(async () => {
+                    // Removes auth params.
+                    history.pushState({}, '', '/');
+                });
+            }
+        })
+    },
+    isAuthenticated: () => {
+        return authClient.getTokenSilently()
     },
 }
 
