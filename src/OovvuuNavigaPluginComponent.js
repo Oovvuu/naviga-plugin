@@ -28,21 +28,47 @@ class OovvuuNavigaPluginComponent extends Component {
      */
     didMount() {
 
-        // Handle auth callback.
-        authService.handleAuthCallback()
-
         // Check if the user is authenticated.
-        authService.isAuthenticated()
+        this.handleSetAuthState(authService.isAuthenticated());
+    }
+
+    /**
+     * Handles the set auth state based on the resolution of a Promise.
+     *
+     * @param  {Promise} promise Auth promise.
+     */
+    handleSetAuthState( promise ) {
+        // Clear the auth state.
+        this.clearAuthState();
+
+        // Handle promise resolution.
+        promise
             .then(() => {
-                this.extendState({
-                    authenticated: true
-                })
+                this.setAuthState(true);
             })
             .catch(() => {
-                this.extendState({
-                    authenticated: false
-                })
+                this.setAuthState(false);
             });
+    }
+
+    /**
+     * Clears the authentication state.
+     *
+     * @param {Boolean} authState True or false.
+     */
+    setAuthState( authState ) {
+        this.extendState({
+            authenticated: Boolean(authState)
+        })
+    }
+
+    /**
+     * Clears the authentication state.
+     */
+    clearAuthState() {
+        this.extendState({
+            authenticated: null
+        })
     }
 
     /**
@@ -60,7 +86,7 @@ class OovvuuNavigaPluginComponent extends Component {
                 label: this.getLabel('Login'),
                 type: 'default'
             }).on('click', async() => {
-                authService.login();
+                this.handleSetAuthState(authService.login())
             });
         } else if ( true === this.state.authenticated ) {
             components = [
