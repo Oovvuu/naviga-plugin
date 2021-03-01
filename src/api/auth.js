@@ -23,11 +23,17 @@ domReady(() => {
 })
 
 const authService = {
-    login: auth0.loginWithRedirect(),
-    logout: auth0.logout({
-        returnTo: window.location.origin
-    }),
-    isAuthenticated: auth0.getTokenSilently(),
+    login: async () => {
+        await auth0.loginWithRedirect()
+    },
+    logout: async () => {
+        auth0.logout({
+            returnTo: window.location.origin
+        })
+    },
+    isAuthenticated: async () => {
+        auth0.getTokenSilently()
+    },
 }
 
 export default authService;

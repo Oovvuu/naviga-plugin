@@ -63,7 +63,7 @@ class OovvuuNavigaPluginComponent extends Component {
                     label: this.getLabel('Login'),
                     type: 'default'
                 }).on('click', async() => {
-                    await authService.login();
+                    authService.login();
                 })
             );
         } else if ( true === this.state.authenticated) {
