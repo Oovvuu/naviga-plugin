@@ -1,8 +1,8 @@
 import {Component} from 'substance'
 import {UIButton} from 'writer'
-import { Auth0Client } from '@auth0/auth0-spa-js'
+import authService from './api/auth.js'
 
-class DevKitComponent extends Component {
+class OovvuuNavigaPluginComponent extends Component {
 
     /**
      * Constructor
@@ -13,20 +13,13 @@ class DevKitComponent extends Component {
     }
 
     /**
-     * Method called when component is disposed and removed from DOM
-     */
-    dispose() {
-        // Perfect place to remove eventlisteners etc
-    }
-
-    /**
      * Return the inital component state before rendering
      *
      * @returns {{clickCount: number}}
      */
     getInitialState() {
         return {
-            clickCount: 0
+            authenticated: null
         }
     }
 
@@ -34,7 +27,88 @@ class DevKitComponent extends Component {
      * Do something after the first render
      */
     didMount() {
-        console.log('Devkit plugin rendered')
+
+        // Check if the user is authenticated.
+        this.handleSetAuthState(authService.isAuthenticated());
+    }
+
+    /**
+     * Handles the set auth state based on the resolution of a Promise.
+     *
+     * @param  {Promise} promise Auth promise.
+     */
+    handleSetAuthState( promise ) {
+        // Clear the auth state.
+        this.clearAuthState();
+
+        // Handle promise resolution.
+        promise
+            .then(() => {
+                this.setAuthState(true);
+            })
+            .catch(() => {
+                this.setAuthState(false);
+            });
+    }
+
+    /**
+     * Clears the authentication state.
+     *
+     * @param {Boolean} authState True or false.
+     */
+    setAuthState( authState ) {
+        this.extendState({
+            authenticated: Boolean(authState)
+        })
+    }
+
+    /**
+     * Clears the authentication state.
+     */
+    clearAuthState() {
+        this.extendState({
+            authenticated: null
+        })
+    }
+
+    /**
+     * Get based components based on authentication.
+     *
+     * @param $$
+     * @return Components.
+     */
+    getComponents($$) {
+        let components = null;
+
+        // Not authenticated.
+        if ( false === this.state.authenticated ) {
+            components = $$(UIButton, {
+                label: this.getLabel('Login'),
+                type: 'default'
+            }).on('click', async() => {
+                this.handleSetAuthState(authService.login())
+            });
+        } else if ( true === this.state.authenticated ) {
+            components = [
+                $$(UIButton, {
+                    label: this.getLabel('Add Embed')
+                }).on('click', async () => {
+                    this.context.api.editorSession.executeCommand('oovvuu.insert', {title: 'Title', embedId: 'test'})
+                }),
+                $$('div').append([
+                    $$(UIButton, {
+                        label: this.getLabel('Logout'),
+                        type: 'alert outlined'
+                    }).on('click', async () => {
+                        authService.logout();
+                    })
+                ])
+            ];
+        } else if ( null === this.state.authenticated ) {
+            components = $$('p').text('Loading user...');
+        }
+
+        return components;
     }
 
     /**
@@ -44,38 +118,23 @@ class DevKitComponent extends Component {
      * @returns {*}
      */
     render($$) {
-        const el = $$('div')
-            .addClass('devkit')
+        const container = $$('div');
+        const title = $$('h2').append(
+            this.getLabel('Oovvuu Plugin')
+        );
 
-        const auth0 = new Auth0Client({
-            domain: 'oovvuu-production.au.auth0.com',
-            client_id: 'aZfpyRNB2wViuceV3Q87638Gp5TeI0s7',
-            client_secret: 'cX0i2MONG2rJcV3bCf04a1870Jw14V0TqsOKNfBHu_8QwJd8Ix8PU7GDkgaVmB-J',
-            audience: 'https://api.prod.oovvuu.io',
-            scope: 'offline_access openid',
-            useRefreshTokens: true,
-        });
+        // Add the title.
+        container.append(title);
 
-        el.append([
-            $$('h2').append(
-                this.getLabel('Oovvuu Plugin')
-            ),
-            $$(UIButton, {
-                label: this.getLabel('Login')
-            }).on('click', async () => {
-                await auth0.loginWithRedirect({
-                    redirect_uri: 'https://writer.dev.developer.infomaker.io/?action=oovvuu-auth'
-                });
-            }),
-            $$(UIButton, {
-                label: this.getLabel('Add Embed')
-            }).on('click', async () => {
-                this.context.api.editorSession.executeCommand('oovvuu.insert', {title: 'Title', embedId: 'test'})
-            })
-        ])
+        // Add components.
+        const components = this.getComponents($$);
 
-        return el
+        if (components) {
+            container.append(components);
+        }
+
+        return container
     }
 }
 
-export {DevKitComponent}
+export {OovvuuNavigaPluginComponent}

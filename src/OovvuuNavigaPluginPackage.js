@@ -8,14 +8,14 @@ import {OovvuuConverter} from './converters/OovvuuConverter.js'
 
 export default {
     name: 'oovvuu',
-    id: 'oovvuu.naviga',
+    id: 'en.infomaker.oovvuu',
 
     // The configure() is called by the writer when it wants the
     // plugin to initalize itself and its different parts.
     configure: function(config, pluginConfig) {
 
         // Add plugin to main sidebar (can be overriden in plugin config)
-        config.addToSidebar('main', pluginConfig, OovvuuNavigaPluginComponent)
+        config.addToSidebar('Oovvuu', pluginConfig, OovvuuNavigaPluginComponent)
         config.addContentMenuTopTool('oovvuu.insert', OovvuuTool)
         config.addCommand('oovvuu.insert', OovvuuCommand)
         config.addNode(OovvuuNode)
