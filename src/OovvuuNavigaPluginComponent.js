@@ -114,7 +114,7 @@ class OovvuuNavigaPluginComponent extends Component {
             }).on('click', async() => {
                 this.handleSetAuthState(authService.login())
             });
-        } else if ( true === this.state.authenticated && this.state.user ) {
+        } else if ( true === this.state.authenticated ) {
             components = [
                 $$(UIButton, {
                     label: this.getLabel('Add Embed')
@@ -129,8 +129,14 @@ class OovvuuNavigaPluginComponent extends Component {
                         authService.logout();
                     })
                 ]),
-                $$('p').append($$('em').text(`Currently logged in as ${this.state.user.email}`)),
             ];
+
+            // Add user info if available.
+            if ( this.state.user ) {
+                components.push(
+                    $$('p').append($$('em').text(`Currently logged in as ${this.state.user.email}`))
+                )
+            }
         } else if ( null === this.state.authenticated ) {
             components = $$('p').text('Loading user...');
         }
