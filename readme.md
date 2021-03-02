@@ -23,7 +23,6 @@ export default {
     client_id: 'xxxxxxxxx', // Provided by Oovvuu team when the app is created.
     client_secret: 'xxxxxxxxx', // Provided by Oovvuu team when the app is created.
     audience: 'https://api.prod.oovvuu.io',
-    redirect_uri: 'xxxxxxxxx', // URL to handle the final authentication handshake.
     scope: 'offline_access openid',
     useRefreshTokens: true,
 }

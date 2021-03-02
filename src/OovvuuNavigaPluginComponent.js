@@ -35,7 +35,7 @@ class OovvuuNavigaPluginComponent extends Component {
     /**
      * Handles the set auth state based on the resolution of a Promise.
      *
-     * @param  {Promise} promise Auth promise.
+     * @param {Promise} promise Auth promise.
      */
     handleSetAuthState( promise ) {
         // Clear the auth state.
@@ -45,10 +45,36 @@ class OovvuuNavigaPluginComponent extends Component {
         promise
             .then(() => {
                 this.setAuthState(true);
+                this.setUser(authService.getUser());
             })
             .catch(() => {
                 this.setAuthState(false);
             });
+    }
+
+    /**
+     * Sets the user object.
+     *
+     * @param {Promise} promise Get user promise.
+     */
+    setUser( userPromise ) {
+        this.clearUser();
+
+        userPromise
+            .then((user) => {
+                this.extendState({
+                    user: user
+                })
+            })
+    }
+
+    /**
+     * Clears the authentication state.
+     */
+    clearUser() {
+        this.extendState({
+            user: null
+        })
     }
 
     /**
@@ -102,8 +128,15 @@ class OovvuuNavigaPluginComponent extends Component {
                     }).on('click', async () => {
                         authService.logout();
                     })
-                ])
+                ]),
             ];
+
+            // Add user info if available.
+            if ( this.state.user ) {
+                components.push(
+                    $$('p').append($$('em').text(`Currently logged in as ${this.state.user.email}`))
+                )
+            }
         } else if ( null === this.state.authenticated ) {
             components = $$('p').text('Loading user...');
         }

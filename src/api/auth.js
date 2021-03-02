@@ -12,6 +12,9 @@ const authService = {
     isAuthenticated: () => {
         return authClient.getTokenSilently()
     },
+    getUser: () => {
+        return authClient.getUser();
+    }
 }
 
 export default authService;
