@@ -1,6 +1,13 @@
 import { GraphQLClient, gql } from 'graphql-request'
 import authService from './auth.js'
 
+/**
+ * Performs a GraphQL request to the API.
+ *
+ * @param  {string}  query     The graphql query string.
+ * @param  {object}  variables Variables to be sent with the query.
+ * @return {Promise}           API request.
+ */
 const request = async (query, variables) => {
     const endpoint = 'https://api.oovvuu.media/v1/graphql/'
 

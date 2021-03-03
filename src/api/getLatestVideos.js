@@ -1,5 +1,11 @@
 import request from './graphql.js'
 
+/**
+ * Gets the latest videos based on a keyword search.
+ *
+ * @param  {string} keywords A string of keywords.
+ * @return {Promise} The API request.
+ */
 const getLatestVideos = (keywords) => {
     const query = `
     query ($input: VideoSetInput!, $playbackInput: PlaybackInput! ) {
