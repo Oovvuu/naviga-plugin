@@ -32,6 +32,8 @@
         "webpack-merge": "^4.2.1"
     },
     "dependencies": {
-        "@auth0/auth0-spa-js": "^1.13.6"
+        "@auth0/auth0-spa-js": "^1.13.6",
+        "graphql": "^15.5.0",
+        "graphql-request": "^3.4.0"
     }
 }

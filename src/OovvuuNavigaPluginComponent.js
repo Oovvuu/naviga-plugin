@@ -1,6 +1,7 @@
 import {Component} from 'substance'
 import {UIButton} from 'writer'
 import authService from './api/auth.js'
+import getLatestVideos from './api/getLatestVideos.js'
 
 class OovvuuNavigaPluginComponent extends Component {
 
@@ -115,6 +116,16 @@ class OovvuuNavigaPluginComponent extends Component {
                 this.handleSetAuthState(authService.login())
             });
         } else if ( true === this.state.authenticated ) {
+
+            // Get the latest videos.
+            getLatestVideos('golf')
+                .then((videos) => {
+                    console.log(videos);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+
             components = [
                 $$(UIButton, {
                     label: this.getLabel('Add Embed')
