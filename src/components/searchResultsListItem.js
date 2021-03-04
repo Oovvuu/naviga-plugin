@@ -1,5 +1,6 @@
 import {Component} from 'substance'
 import {UIButton} from 'writer'
+import BrightcovePlayer from './brightcovePlayer.js';
 
 class SearchResultsListItem extends Component {
 
@@ -26,6 +27,12 @@ class SearchResultsListItem extends Component {
 
         // Add the title.
         container.append(title);
+
+        container.append($$(BrightcovePlayer, {
+            accountId: this.props.video.preview.brightcoveAccountId,
+            playerId: this.props.video.preview.brightcovePlayerId,
+            videoId: this.props.video.preview.brightcoveVideoId
+        }));
 
         return container
     }
