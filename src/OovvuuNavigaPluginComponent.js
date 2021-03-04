@@ -1,5 +1,6 @@
 import {Component} from 'substance'
 import {UIButton} from 'writer'
+import SearchResultsList from './components/searchResultsList.js'
 import authService from './api/auth.js'
 
 class OovvuuNavigaPluginComponent extends Component {
@@ -15,7 +16,7 @@ class OovvuuNavigaPluginComponent extends Component {
     /**
      * Return the inital component state before rendering
      *
-     * @returns {{clickCount: number}}
+     * @returns {object} Component state.
      */
     getInitialState() {
         return {
@@ -69,7 +70,7 @@ class OovvuuNavigaPluginComponent extends Component {
     }
 
     /**
-     * Clears the authentication state.
+     * Clears the user.
      */
     clearUser() {
         this.extendState({
@@ -78,7 +79,7 @@ class OovvuuNavigaPluginComponent extends Component {
     }
 
     /**
-     * Clears the authentication state.
+     * Sets the authentication state.
      *
      * @param {Boolean} authState True or false.
      */
@@ -104,23 +105,18 @@ class OovvuuNavigaPluginComponent extends Component {
      * @return Components.
      */
     getComponents($$) {
-        let components = null;
+        let components = [];
 
         // Not authenticated.
         if ( false === this.state.authenticated ) {
-            components = $$(UIButton, {
+            components.push($$(UIButton, {
                 label: this.getLabel('Login'),
                 type: 'default'
             }).on('click', async() => {
                 this.handleSetAuthState(authService.login())
-            });
+            }));
         } else if ( true === this.state.authenticated ) {
-            components = [
-                $$(UIButton, {
-                    label: this.getLabel('Add Embed')
-                }).on('click', async () => {
-                    this.context.api.editorSession.executeCommand('oovvuu.insert', {title: 'Title', embedId: 'test'})
-                }),
+            components.push(
                 $$('div').append([
                     $$(UIButton, {
                         label: this.getLabel('Logout'),
@@ -129,7 +125,7 @@ class OovvuuNavigaPluginComponent extends Component {
                         authService.logout();
                     })
                 ]),
-            ];
+            );
 
             // Add user info if available.
             if ( this.state.user ) {
@@ -137,8 +133,11 @@ class OovvuuNavigaPluginComponent extends Component {
                     $$('p').append($$('em').text(`Currently logged in as ${this.state.user.email}`))
                 )
             }
+
+            // Add search results.
+            components.push($$(SearchResultsList))
         } else if ( null === this.state.authenticated ) {
-            components = $$('p').text('Loading user...');
+            components.push($$('p').text('Loading user...'));
         }
 
         return components;
