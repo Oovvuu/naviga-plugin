@@ -17,10 +17,14 @@ class BrightcovePlayer extends Component {
      * @returns {*}
      */
     render($$) {
-        const iframe = $$('iframe').attr('src', `https://players.brightcove.net/${this.props.accountId}/${this.props.playerId}_default/index.html?videoId=${this.props.videoId}`);
         const container = $$('div');
 
-        container.append(iframe);
+        container.append(
+            $$('iframe').attr(
+                'src',
+                `https://players.brightcove.net/${this.props.accountId}/${this.props.playerId}_default/index.html?videoId=${this.props.videoId}`
+            )
+        );
 
         return container
     }
