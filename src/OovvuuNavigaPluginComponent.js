@@ -48,7 +48,7 @@ class OovvuuNavigaPluginComponent extends Component {
                 this.setAuthState(true);
                 this.setUser(authService.getUser());
             })
-            .catch((error) => {
+            .catch(() => {
                 this.setAuthState(false);
             });
     }
