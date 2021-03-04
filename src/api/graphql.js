@@ -23,7 +23,8 @@ const request = async (query, variables) => {
 
     const graphQLClient = new GraphQLClient(endpoint, {
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
         },
     })
 
