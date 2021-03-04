@@ -20,7 +20,8 @@ class SearchResultsList extends Component {
      */
     getInitialState() {
         return {
-            videos: null,
+            videos: [],
+            loadingVideos: false,
         }
     }
 
@@ -33,6 +34,40 @@ class SearchResultsList extends Component {
         this.extendState({
             videos: videos
         })
+    }
+
+    /**
+     * Sets loading videos.
+     *
+     * @param {Boolean} loading True or false.
+     */
+    setLoadingVideos( loading ) {
+        this.extendState({
+            loadingVideos: Boolean(loading)
+        })
+    }
+
+    /**
+     * Performs an API call to get videos based on keywords.
+     *
+     * @param {String} keywords Search keywords.
+     */
+    async handleVideoSearch ( keywords ) {
+        // Set loading.
+        this.setLoadingVideos(true);
+
+        // Get the latest videos.
+        const response = await getLatestVideos( keywords );
+
+        if (
+            undefined !== response.data.videoSet.pageResults
+            && 0 < response.data.videoSet.pageResults.length
+        ) {
+            this.setVideos(response.data.videoSet.pageResults);
+        }
+
+        // Clear loading.
+        this.setLoadingVideos(false);
     }
 
     /**
@@ -56,28 +91,25 @@ class SearchResultsList extends Component {
 
         // Add search results components.
         container.append(inputField);
+        container.append(
+            $$(UIButton, {
+                label: this.getLabel('Submit')
+            }).on('click', () => {
+                this.handleVideoSearch(document.getElementById('oovvuu-video-search-button').value)
+            })
+        );
 
-        container.append($$(UIButton, {
-            label: this.getLabel('Submit')
-        }).on('click', async () => {
-            // Get the latest videos.
-            const response = await getLatestVideos(document.getElementById('oovvuu-video-search-button').value)
-
-            if (
-                undefined !== response.data.videoSet.pageResults
-                && 0 < response.data.videoSet.pageResults.length
-            ) {
-                this.setVideos(response.data.videoSet.pageResults);
-            }
-        }));
-
-        // Add video items.
-        if (this.state.videos && 0 < this.state.videos.length) {
-
-            for (var index = 0; index < this.state.videos.length; index++) {
-                container.append($$(SearchResultsListItem, {
-                    video: this.state.videos[index],
-                }));
+        // Loading state.
+        if ( true === this.state.loadingVideos) {
+            container.append($$('p').text('Loading videos...'));
+        } else {
+            // Add video items.
+            if (this.state.videos && 0 < this.state.videos.length) {
+                for (var index = 0; index < this.state.videos.length; index++) {
+                    container.append($$(SearchResultsListItem, {
+                        video: this.state.videos[index],
+                    }));
+                }
             }
         }
 
