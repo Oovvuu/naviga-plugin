@@ -1,38 +1,94 @@
-import {Component} from 'substance'
-import {UIButton} from 'writer'
-import BrightcovePlayer from './brightcovePlayer.js';
+import { Component } from 'substance';
+import BrightcovePlayer from './brightcovePlayer';
+import Badge from './badge';
+import formatDuration from '../utils/formatDuration';
+import formatTimeSince from '../utils/formatTimeSince';
+import * as styles from './searchResultsListItem.scss';
 
 class SearchResultsListItem extends Component {
 
     /**
-     * Constructor
-     * @param args
+     * Create a SearchResultsListItem.
+     * @constructor
+     *
+     * @param {array} args Component arguments.
      */
     constructor(...args) {
-        super(...args)
+        super(...args);
     }
 
     /**
-     * Render method is called whenever there's a change in state or props
+     * Render the SearchResultsListItem.
      *
-     * @param $$
-     * @returns {*}
+     * @param  {function} $$ The createComponent function.
+     * @return {VirtualComponent} The SearchResultsListItem component.
      */
     render($$) {
-        const container = $$('div');
+        const {
+            video: {
+                id,
+                title,
+                duration,
+                modified,
+                collection: {
+                    provider: {
+                        logo: {
+                            url: logoUrl,
+                        } = {},
+                        name = '',
+                    } = {},
+                } = {},
+                preview: {
+                    brightcoveAccountId: accountId,
+                    brightcovePlayerId: playerId,
+                    brightcoveVideoId: videoId,
+                } = {},
+            }
+        } = this.props;
 
-        const title = $$('h2').append(
-            this.props.video.title
+        const container = $$('article')
+            .setId(id)
+            .addClass(styles.wrapper);
+
+        // Add the player.
+        container.append($$(BrightcovePlayer, {
+            accountId,
+            playerId,
+            videoId,
+            embedOptions: { responsive: true },
+            options: { // Video.js options.
+                fluid: true,
+                aspectRatio: '16:9',
+                width: 250,
+            },
+        }));
+
+        const card = $$('div').addClass(styles.card);
+
+        // Meta.
+        card.append(
+            $$('div')
+                .addClass(styles.meta)
+                .append($$(Badge, { text: formatDuration(duration) }))
+                .append($$(Badge, { text: formatTimeSince(modified) }))
         );
 
-        // Add the title.
-        container.append(title);
+        // Logo.
+        card.append(
+            $$('img')
+                .addClass(styles.logo)
+                .attr('alt', name)
+                .attr('src', logoUrl)
+        );
 
-        container.append($$(BrightcovePlayer, {
-            accountId: this.props.video.preview.brightcoveAccountId,
-            playerId: this.props.video.preview.brightcovePlayerId,
-            videoId: this.props.video.preview.brightcoveVideoId
-        }));
+        // Title.
+        card.append(
+            $$('h2')
+                .setTextContent(title)
+                .addClass(styles.title)
+        );
+
+        container.append(card);
 
         return container
     }

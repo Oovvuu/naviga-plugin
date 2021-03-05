@@ -1,0 +1,35 @@
+.wrapper {
+    background-color: var(--oovvuu-color-white);
+    composes: deep-shadow from '../scss/shared/theme.scss';
+    composes: rounded-bottom from '../scss/shared/theme.scss';
+    overflow: hidden;
+}
+
+.card {
+    display: grid;
+    grid-gap: rem(10);
+    grid-template-columns: max-content 1fr;
+    grid-template-areas:
+        'meta meta'
+        'logo title';
+    padding: rem(5) rem(10);
+}
+
+.meta {
+    display: flex;
+    grid-area: meta;
+}
+
+.logo {
+    grid-area: logo;
+    height: rem(35);
+    width: rem(35);
+}
+
+.title {
+    @include override-plugin-styles {
+        @include font-props(12, 18);
+        padding: 0;
+    }
+    grid-area: title;
+}

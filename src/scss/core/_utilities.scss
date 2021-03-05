@@ -55,6 +55,25 @@
 }
 
 /**
+ * Target the plugin area for specificity overrides.
+ * @link https://gist.github.com/goodguyry/2f33aab66216b5607e35a1a40ad91a4e
+ */
+@mixin override-plugin-styles {
+  $sidebar-selector: ':global .dwc-context-section .se-tab-content .plugin-en-infomaker-oovvuu';
+
+  // Check for a parent selector so we can use it in the root if needed.
+  $selector: if(
+    '' == '#{&}',
+    $sidebar-selector,
+    selector-nest($sidebar-selector, ':local #{&}')
+  );
+
+  @at-root #{$selector} {
+    @content;
+  }
+}
+
+/**
  * Remove browser default form element styles.
  */
 @mixin form-element-reset {

@@ -2,6 +2,7 @@ import {Component} from 'substance'
 import {UIButton} from 'writer'
 import getLatestVideos from '../api/getLatestVideos.js'
 import SearchResultsListItem from './searchResultsListItem.js'
+import * as styles from './SearchResultsList.scss';
 
 class SearchResultsList extends Component {
 
@@ -86,8 +87,9 @@ class SearchResultsList extends Component {
         // Add the title.
         container.append(title);
 
-        const inputField = $$('input').attr('placeholder', 'Search for videos...');
-        inputField.attr('id','oovvuu-video-search-button')
+        const inputField = $$('input')
+            .attr('placeholder', 'Search for videos...')
+            .setId('oovvuu-video-search-button');
 
         // Add search results components.
         container.append(inputField);
@@ -105,11 +107,18 @@ class SearchResultsList extends Component {
         } else {
             // Add video items.
             if (this.state.videos && 0 < this.state.videos.length) {
+                const list = $$('ol').addClass(styles.list);
+
                 for (var index = 0; index < this.state.videos.length; index++) {
-                    container.append($$(SearchResultsListItem, {
+                    const item = $$('li');
+
+                    item.append($$(SearchResultsListItem, {
                         video: this.state.videos[index],
                     }));
+
+                    list.append(item);
                 }
+                container.append(list);
             }
         }
 

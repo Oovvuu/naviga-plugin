@@ -1,0 +1,17 @@
+.badge {
+    @include font-props(10, 10, medium);
+    align-items: center;
+    background-color: var(--oovvuu-color-gray-light);
+    composes: rounded from '../../scss/shared/theme.scss';
+    composes: uppercase from '../../scss/shared/text.scss';
+    display: inline-flex;
+    height: rem(16);
+    justify-content: center;
+    min-width: rem(40);
+    padding: em(3) rem(10) 0 rem(10);
+    width: max-content;
+
+    &:first-child:not(:only-child) {
+        margin-right: rem(5);
+    }
+}
