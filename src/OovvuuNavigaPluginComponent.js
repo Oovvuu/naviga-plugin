@@ -20,7 +20,8 @@ class OovvuuNavigaPluginComponent extends Component {
      */
     getInitialState() {
         return {
-            authenticated: null
+            authenticated: null,
+            authenticationError: null,
         }
     }
 
@@ -41,6 +42,7 @@ class OovvuuNavigaPluginComponent extends Component {
     handleSetAuthState( promise ) {
         // Clear the auth state.
         this.clearAuthState();
+        this.clearAuthErrorState();
 
         // Handle promise resolution.
         promise
@@ -48,7 +50,8 @@ class OovvuuNavigaPluginComponent extends Component {
                 this.setAuthState(true);
                 this.setUser(authService.getUser());
             })
-            .catch(() => {
+            .catch((error) => {
+                this.setAuthErrorState(error);
                 this.setAuthState(false);
             });
     }
@@ -99,6 +102,26 @@ class OovvuuNavigaPluginComponent extends Component {
     }
 
     /**
+     * Sets the authentication error state.
+     *
+     * @param {object} error Error object.
+     */
+    setAuthErrorState( error ) {
+        this.extendState({
+            authenticationError: error
+        })
+    }
+
+    /**
+     * Clears the authentication error state.
+     */
+    clearAuthErrorState() {
+        this.extendState({
+            authenticationError: null
+        })
+    }
+
+    /**
      * Get based components based on authentication.
      *
      * @param $$
@@ -115,6 +138,12 @@ class OovvuuNavigaPluginComponent extends Component {
             }).on('click', async() => {
                 this.handleSetAuthState(authService.login())
             }));
+
+            // Authentication error
+            if ( null !== this.state.authenticationError ) {
+                components.push($$('p').text(this.state.authenticationError));
+                components.push($$('p').text('Please contact site admin for support.'));
+            }
         } else if ( true === this.state.authenticated ) {
             components.push(
                 $$('div').append([
