@@ -16,9 +16,7 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader
-                    },
+                    MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: {
@@ -30,10 +28,18 @@ module.exports = {
                             },
                         },
                     },
+                    'postcss-loader',
+                    'sass-loader',
                     {
-                        loader: 'sass-loader'
-                    }
-                ]
+                        loader: 'sass-resources-loader',
+                        options: {
+                            resources: [
+                                'core/_utilities.scss',
+                                'core/_typography.scss',
+                            ].map((file) => path.join(__dirname, `../src/scss/${file}`)),
+                        },
+                    },
+                ],
             },
             {
                 enforce: 'pre',
