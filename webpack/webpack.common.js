@@ -22,10 +22,13 @@ module.exports = {
                     {
                         loader: 'css-loader',
                         options: {
-                            modules: false,
                             importLoaders: 1,
-                            sourceMap: true
-                        }
+                            sourceMap: true,
+                            modules: {
+                                mode: 'local',
+                                localIdentName: '[name]__[local]___[hash:base64:5]',
+                            },
+                        },
                     },
                     {
                         loader: 'sass-loader'
