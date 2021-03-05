@@ -30,6 +30,15 @@ module.exports = {
                     },
                     'postcss-loader',
                     'sass-loader',
+                    {
+                        loader: 'sass-resources-loader',
+                        options: {
+                            resources: [
+                                'core/_utilities.scss',
+                                'core/_typography.scss',
+                            ].map((file) => path.join(__dirname, `../src/scss/${file}`)),
+                        },
+                    },
                 ],
             },
             {
