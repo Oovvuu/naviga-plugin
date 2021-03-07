@@ -59,11 +59,13 @@ class SearchResultsList extends Component {
         // Get the latest videos.
         const response = await getLatestVideos( keywords );
 
+        console.log(response);
+
         if (
-            undefined !== response.data.videoSet.pageResults
-            && 0 < response.data.videoSet.pageResults.length
+            undefined !== response.videoSet.pageResults
+            && 0 < response.videoSet.pageResults.length
         ) {
-            this.setVideos(response.data.videoSet.pageResults);
+            this.setVideos(response.videoSet.pageResults);
         }
 
         // Clear loading.
