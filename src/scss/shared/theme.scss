@@ -18,3 +18,26 @@
 .rounded {
     border-radius: rem(4);
 }
+
+/**
+ * Rounded bottom borders.
+ */
+.rounded-bottom {
+    border-radius: 0 0 rem(4) rem(4);
+}
+
+/**
+ * 16-9 container.
+ */
+.aspect-ratio-16-9 {
+    position: relative;
+}
+
+.aspect-ratio-16-9::before {
+    content: '';
+    display: block;
+    height: 0;
+    overflow: hidden;
+    padding-top: calc((9/16) * 100%);
+    position: relative;
+}

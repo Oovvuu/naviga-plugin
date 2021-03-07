@@ -6,7 +6,7 @@
 }
 
 // Plugin-wide base styles.
-:global(.dwc-context-section .se-tab-content .plugin-en-infomaker-oovvuu) {
+@include override-plugin-styles {
 
     // Reset list styles.
     ul,

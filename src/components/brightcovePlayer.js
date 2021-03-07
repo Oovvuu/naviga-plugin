@@ -1,5 +1,6 @@
 import {Component} from 'substance'
 import brightcovePlayerLoader from '@brightcove/player-loader';
+import * as styles from './brightcovePlayer.scss';
 
 class BrightcovePlayer extends Component {
 
@@ -41,7 +42,9 @@ class BrightcovePlayer extends Component {
      * @returns {*}
      */
     render($$) {
-        return $$('div').attr('id', this.state.elementId);
+        return $$('div')
+            .attr('id', this.state.elementId)
+            .addClass(styles.wrapper);
     }
 }
 
