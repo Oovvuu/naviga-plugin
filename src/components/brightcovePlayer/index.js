@@ -1,4 +1,4 @@
-import {Component} from 'substance'
+import { Component } from 'substance';
 import brightcovePlayerLoader from '@brightcove/player-loader';
 import * as styles from './brightcovePlayer.scss';
 
@@ -9,7 +9,7 @@ class BrightcovePlayer extends Component {
      * @param args
      */
     constructor(...args) {
-        super(...args)
+        super(...args);
     }
 
     /**
@@ -20,7 +20,7 @@ class BrightcovePlayer extends Component {
     getInitialState() {
         return {
             elementId: `brightcove-player-${this.props.videoId}`
-        }
+        };
     }
 
     didMount() {
