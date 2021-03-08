@@ -1,4 +1,5 @@
 import { Component } from 'substance';
+import { UISpinner } from 'writer';
 import getLatestVideos from '../../api/getLatestVideos';
 import SearchForm from './searchForm';
 import SearchResultsItem from './searchResultsItem';
@@ -37,7 +38,7 @@ class SearchWrapper extends Component {
      */
     setVideos( videos ) {
         this.extendState({
-            videos: videos
+            videos: videos,
         })
     }
 
@@ -48,7 +49,7 @@ class SearchWrapper extends Component {
      */
     setLoadingVideos( loading ) {
         this.extendState({
-            loadingVideos: Boolean(loading)
+            loadingVideos: Boolean(loading),
         })
     }
 
@@ -59,7 +60,7 @@ class SearchWrapper extends Component {
      */
     setVideosError( error ) {
         this.extendState({
-            videosError: error
+            videosError: error,
         })
     }
 
@@ -129,7 +130,10 @@ class SearchWrapper extends Component {
 
         // Loading state.
         if (true === this.state.loadingVideos) {
-            container.append($$('p').text('Loading videos...'));
+            container.append($$(UISpinner, {
+                size: 'medium',
+                color: 'var(--oovvuu-color-theme)',
+            }));
         } else if (false === this.state.loadingVideos && null !== this.state.videosError) {
             container.append($$('p').text(this.state.videosError));
         } else {
