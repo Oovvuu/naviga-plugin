@@ -6,7 +6,7 @@ OovvuuNode.define({
     brightcoveAccountId: {type: 'string'},
     brightcovePlayerId: {type: 'string'},
     brightcoveVideoId: {type: 'string'},
-    embed: {type: 'object'}
+    embed: {type: 'string'}
 })
 
 export {OovvuuNode}

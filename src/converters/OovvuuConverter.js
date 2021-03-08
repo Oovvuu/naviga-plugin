@@ -12,7 +12,7 @@ const OovvuuConverter = {
         node.brightcoveAccountId = el.find('brightcoveAccountId').text()
         node.brightcovePlayerId = el.find('brightcovePlayerId').text()
         node.brightcoveVideoId = el.find('brightcoveVideoId').text()
-        node.embed = el.find('brightcoveVideoId').text()
+        node.embed = el.find('embed').text()
     },
 
     export: function(node, el, converter) {
@@ -24,10 +24,10 @@ const OovvuuConverter = {
 
         el.append([
             $$('data').append([
-                $$('accountId').text(node.brightcoveAccountId),
-                $$('playerId').text(node.brightcovePlayerId),
-                $$('videoId').text(node.brightcoveVideoId),
-                $$('embed').text(JSON.stringify(node.embed)),
+                $$('brightcoveAccountId').text(node.brightcoveAccountId),
+                $$('brightcovePlayerId').text(node.brightcovePlayerId),
+                $$('brightcoveVideoId').text(node.brightcoveVideoId),
+                $$('embed').text(node.embed),
             ]),
         ]);
     }
