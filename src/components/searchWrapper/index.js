@@ -1,10 +1,10 @@
-import {Component} from 'substance'
-import getLatestVideos from '../api/getLatestVideos'
-import SearchForm from './searchForm'
-import SearchResultsListItem from './searchResultsListItem'
-import * as styles from './SearchResultsList.scss';
+import { Component } from 'substance';
+import getLatestVideos from '../../api/getLatestVideos';
+import SearchForm from './searchForm';
+import SearchResultsItem from './searchResultsItem';
+import * as styles from './searchWrapper.scss';
 
-class SearchResultsList extends Component {
+class SearchWrapper extends Component {
 
     /**
      * Constructor
@@ -136,7 +136,7 @@ class SearchResultsList extends Component {
                 for (var index = 0; index < this.state.videos.length; index++) {
                     const item = $$('li');
 
-                    item.append($$(SearchResultsListItem, {
+                    item.append($$(SearchResultsItem, {
                         video: this.state.videos[index],
                     }));
 
@@ -150,4 +150,4 @@ class SearchResultsList extends Component {
     }
 }
 
-export default SearchResultsList;
+export default SearchWrapper;

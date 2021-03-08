@@ -1,9 +1,9 @@
 import { Component } from 'substance';
-import BrightcovePlayer from './brightcovePlayer';
-import Badge from './badge';
-import formatDuration from '../utils/formatDuration';
-import formatTimeSince from '../utils/formatTimeSince';
-import * as styles from './searchResultsListItem.scss';
+import BrightcovePlayer from '../../brightcovePlayer';
+import Badge from '../../badge';
+import formatDuration from '../../../utils/formatDuration';
+import formatTimeSince from '../../../utils/formatTimeSince';
+import * as styles from './searchResultsItem.scss';
 
 class SearchResultsListItem extends Component {
 
