@@ -1,7 +1,7 @@
 import {Component} from 'substance'
-import {UIButton} from 'writer'
-import getLatestVideos from '../api/getLatestVideos.js'
-import SearchResultsListItem from './searchResultsListItem.js'
+import getLatestVideos from '../api/getLatestVideos'
+import SearchForm from './searchForm'
+import SearchResultsListItem from './searchResultsListItem'
 import * as styles from './SearchResultsList.scss';
 
 class SearchResultsList extends Component {
@@ -11,7 +11,10 @@ class SearchResultsList extends Component {
      * @param args
      */
     constructor(...args) {
-        super(...args)
+        super(...args);
+
+        // Bind class methods.
+        this.handleInputSubmit = this.handleInputSubmit.bind(this);
     }
 
     /**
@@ -115,23 +118,9 @@ class SearchResultsList extends Component {
     render($$) {
         const container = $$('div');
 
-        const title = $$('h2').append(
-            this.getLabel('Search results')
-        );
-
-        // Add the title.
-        container.append(title);
-
-        const inputField = $$('input')
-            .attr('placeholder', 'Search for videos...')
-            .setId('oovvuu-video-search-button');
-
-        // Add search results components.
-        container.append(inputField);
+        // Add the search form.
         container.append(
-            $$(UIButton, {
-                label: this.getLabel('Submit')
-            }).on('click', () => { this.handleInputSubmit() } )
+            $$(SearchForm, { handleInputSubmit: this.handleInputSubmit })
         );
 
         // Loading state.
