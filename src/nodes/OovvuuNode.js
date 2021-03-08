@@ -3,7 +3,10 @@ class OovvuuNode extends BlockNode {}
 
 OovvuuNode.define({
     type: 'oovvuunode',
-    embedId: {type: 'string'}
+    brightcoveAccountId: {type: 'string'},
+    brightcovePlayerId: {type: 'string'},
+    brightcoveVideoId: {type: 'string'},
+    embed: {type: 'object'}
 })
 
 export {OovvuuNode}

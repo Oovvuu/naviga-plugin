@@ -6,9 +6,10 @@ class OovvuuCommand extends WriterCommand {
             tx.insertBlockNode({
                 id: idGenerator(),
                 type: 'oovvuunode',
-                title: 'Oovvuu',
-                // @TODO: Remove test data.
-                embedId: 'test'
+                brightcoveAccountId: params.brightcoveAccountId,
+                brightcovePlayerId: params.brightcovePlayerId,
+                brightcoveVideoId: params.brightcoveVideoId,
+                embed: params.embed,
             })
         })
         return true

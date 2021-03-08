@@ -1,6 +1,7 @@
 import { Component } from 'substance';
 import BrightcovePlayer from './brightcovePlayer';
 import Badge from './badge';
+import createEmbed from '../api/createEmbed.js';
 import formatDuration from '../utils/formatDuration';
 import formatTimeSince from '../utils/formatTimeSince';
 import * as styles from './searchResultsListItem.scss';
@@ -15,6 +16,31 @@ class SearchResultsListItem extends Component {
      */
     constructor(...args) {
         super(...args);
+    }
+
+    /**
+     * Handle creating the Oovvuu embed and add it to the document.
+     */
+    handleAddEmbed() {
+        // Create the embed based on the video ID.
+        if (undefined === this.props.video || !this.props.video.id) {
+            return;
+        }
+
+        createEmbed(this.props.video.id)
+            .then((embed) => {
+                this.context.api.editorSession.executeCommand(
+                    'oovvuu.insert',
+                    {
+                        brightcoveAccountId: this.props.video.preview.brightcoveAccountId,
+                        brightcovePlayerId: this.props.video.preview.brightcovePlayerId,
+                        brightcoveVideoId: this.props.video.preview.brightcoveVideoId,
+                        embed: embed.createVideoEmbed,
+                    }
+                );
+            }).catch((error) => {
+                console.log(error);
+            });
     }
 
     /**
@@ -86,6 +112,15 @@ class SearchResultsListItem extends Component {
             $$('h2')
                 .setTextContent(title)
                 .addClass(styles.title)
+        );
+
+        // Add embed.
+        card.append(
+            $$('button')
+                .setTextContent('Add Embed')
+                .on('click', () => {
+                    this.handleAddEmbed()
+                })
         );
 
         container.append(card);
