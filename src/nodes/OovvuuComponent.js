@@ -1,19 +1,17 @@
 import {Component} from 'substance'
+import BrightcovePlayer from '../components/brightcovePlayer';
 
 class OovvuuComponent extends Component {
     render($$) {
         const el = $$('div')
 
-        // @TODO: Example embed, please remove before releasing.
-        el.append([
-            $$('h2').append('Oovvu Test Embed'),
-            $$('div').append([
-                $$('iframe').attr('src', 'https://players.brightcove.net/6146357338001/RepNRAHPdQ_default/index.html?videoId=6230829618001')
-                    .attr('allowfullscreen', true)
-                    .attr('webkitallowfullscreen', true)
-                    .attr('mozallowfullscreen', true)
-            ]),
-        ])
+        // Add the player.
+        el.append($$(BrightcovePlayer, {
+            accountId: this.props.node.brightcoveAccountId,
+            playerId: this.props.node.brightcovePlayerId,
+            videoId: this.props.node.brightcoveVideoId,
+            embedOptions: { responsive: true }
+        }));
 
         return el
     }
