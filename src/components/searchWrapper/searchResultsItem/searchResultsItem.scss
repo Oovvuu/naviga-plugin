@@ -1,7 +1,7 @@
 .wrapper {
     background-color: var(--oovvuu-color-white);
-    composes: deep-shadow from '../scss/shared/theme.scss';
-    composes: rounded-bottom from '../scss/shared/theme.scss';
+    composes: deep-shadow from '../../../scss/shared/theme.scss';
+    composes: rounded-bottom from '../../../scss/shared/theme.scss';
     overflow: hidden;
 }
 

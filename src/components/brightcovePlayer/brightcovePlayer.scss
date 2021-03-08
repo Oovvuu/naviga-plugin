@@ -1,6 +1,6 @@
 .wrapper {
     margin-bottom: rem(5);
-    composes: aspect-ratio-16-9 from '../scss/shared/theme.scss';
+    composes: aspect-ratio-16-9 from '../../scss/shared/theme.scss';
 
     :global(.video-js) {
         height: 100%;

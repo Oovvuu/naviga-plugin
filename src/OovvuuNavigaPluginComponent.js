@@ -1,7 +1,7 @@
-import {Component} from 'substance'
-import {UIButton} from 'writer'
-import SearchResultsList from './components/searchResultsList.js'
-import authService from './api/auth.js'
+import { Component } from 'substance';
+import { UIButton } from 'writer';
+import SearchWrapper from './components/searchWrapper';
+import authService from './api/auth.js';
 
 class OovvuuNavigaPluginComponent extends Component {
 
@@ -164,7 +164,7 @@ class OovvuuNavigaPluginComponent extends Component {
             }
 
             // Add search results.
-            components.push($$(SearchResultsList))
+            components.push($$(SearchWrapper))
         } else if ( null === this.state.authenticated ) {
             components.push($$('p').text('Loading user...'));
         }

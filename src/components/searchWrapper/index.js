@@ -1,17 +1,20 @@
-import {Component} from 'substance'
-import {UIButton} from 'writer'
-import getLatestVideos from '../api/getLatestVideos.js'
-import SearchResultsListItem from './searchResultsListItem.js'
-import * as styles from './SearchResultsList.scss';
+import { Component } from 'substance';
+import getLatestVideos from '../../api/getLatestVideos';
+import SearchForm from './searchForm';
+import SearchResultsItem from './searchResultsItem';
+import * as styles from './searchWrapper.scss';
 
-class SearchResultsList extends Component {
+class SearchWrapper extends Component {
 
     /**
      * Constructor
      * @param args
      */
     constructor(...args) {
-        super(...args)
+        super(...args);
+
+        // Bind class methods.
+        this.handleInputSubmit = this.handleInputSubmit.bind(this);
     }
 
     /**
@@ -115,23 +118,9 @@ class SearchResultsList extends Component {
     render($$) {
         const container = $$('div');
 
-        const title = $$('h2').append(
-            this.getLabel('Search results')
-        );
-
-        // Add the title.
-        container.append(title);
-
-        const inputField = $$('input')
-            .attr('placeholder', 'Search for videos...')
-            .setId('oovvuu-video-search-button');
-
-        // Add search results components.
-        container.append(inputField);
+        // Add the search form.
         container.append(
-            $$(UIButton, {
-                label: this.getLabel('Submit')
-            }).on('click', () => { this.handleInputSubmit() } )
+            $$(SearchForm, { handleInputSubmit: this.handleInputSubmit })
         );
 
         // Loading state.
@@ -147,7 +136,7 @@ class SearchResultsList extends Component {
                 for (var index = 0; index < this.state.videos.length; index++) {
                     const item = $$('li');
 
-                    item.append($$(SearchResultsListItem, {
+                    item.append($$(SearchResultsItem, {
                         video: this.state.videos[index],
                     }));
 
@@ -161,4 +150,4 @@ class SearchResultsList extends Component {
     }
 }
 
-export default SearchResultsList;
+export default SearchWrapper;
