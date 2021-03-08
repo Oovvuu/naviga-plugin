@@ -116,12 +116,16 @@ class SearchWrapper extends Component {
      * @returns {*}
      */
     render($$) {
-        const container = $$('div');
+        const container = $$('div').addClass(styles.wrapper);
 
         // Add the search form.
         container.append(
             $$(SearchForm, { handleInputSubmit: this.handleInputSubmit })
         );
+
+        const heading = $$('h2')
+            .addClass(styles.heading)
+            .text('Latest Videos');
 
         // Loading state.
         if (true === this.state.loadingVideos) {
@@ -142,7 +146,7 @@ class SearchWrapper extends Component {
 
                     list.append(item);
                 }
-                container.append(list);
+                container.append([heading, list]);
             }
         }
 
