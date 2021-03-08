@@ -1,5 +1,3 @@
-import BrightcovePlayer from '../components/brightcovePlayer';
-
 const OovvuuConverter = {
     type: 'oovvuunode',
     tagName: 'object',
