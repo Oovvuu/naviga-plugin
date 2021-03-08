@@ -96,6 +96,17 @@ class SearchResultsList extends Component {
     }
 
     /**
+     * Handles the input search submission.
+     */
+    handleInputSubmit() {
+        const searchValue = document.getElementById('oovvuu-video-search-button').value;
+
+        if ('' !== searchValue) {
+            this.handleVideoSearch(searchValue)
+        }
+    }
+
+    /**
      * Render method is called whenever there's a change in state or props
      *
      * @param $$
@@ -120,11 +131,7 @@ class SearchResultsList extends Component {
         container.append(
             $$(UIButton, {
                 label: this.getLabel('Submit')
-            }).on('click', () => {
-                if ('' !== document.getElementById('oovvuu-video-search-button').value) {
-                    this.handleVideoSearch(document.getElementById('oovvuu-video-search-button').value)
-                }
-            })
+            }).on('click', () => { this.handleInputSubmit() } )
         );
 
         // Loading state.
