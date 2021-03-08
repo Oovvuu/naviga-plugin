@@ -22,6 +22,7 @@ class SearchResultsList extends Component {
     getInitialState() {
         return {
             videos: [],
+            videosError: null,
             loadingVideos: false,
         }
     }
@@ -49,6 +50,17 @@ class SearchResultsList extends Component {
     }
 
     /**
+     * Sets videos error.
+     *
+     * @param {object} error Error from getting videos.
+     */
+    setVideosError( error ) {
+        this.extendState({
+            videosError: error
+        })
+    }
+
+    /**
      * Performs an API call to get videos based on keywords.
      *
      * @param {String} keywords Search keywords.
@@ -56,19 +68,42 @@ class SearchResultsList extends Component {
     async handleVideoSearch ( keywords ) {
         // Set loading.
         this.setLoadingVideos(true);
+        this.setVideosError(null);
 
         // Get the latest videos.
-        const response = await getLatestVideos( keywords );
+        getLatestVideos( keywords )
+            .then((response) => {
+                // Success
+                if (
+                    undefined !== response.videoSet.pageResults
+                  && 0 < response.videoSet.pageResults.length
+                ) {
+                    this.setVideos(response.videoSet.pageResults);
+                } else {
+                    this.setVideosError('Unable to process response, please contact site admin.');
+                }
 
-        if (
-            undefined !== response.videoSet.pageResults
-            && 0 < response.videoSet.pageResults.length
-        ) {
-            this.setVideos(response.videoSet.pageResults);
+                // Clear loading.
+                this.setLoadingVideos(false);
+            })
+            .catch((error) => {
+                console.log('Oovvuu API Error', error);
+                this.setVideosError('Encountered error connecting to API, please contact site admin.');
+
+                // Clear loading.
+                this.setLoadingVideos(false);
+            });
+    }
+
+    /**
+     * Handles the input search submission.
+     */
+    handleInputSubmit() {
+        const inputEl = document.getElementById('oovvuu-video-search-button');
+
+        if (null !== inputEl && '' !== inputEl.value) {
+            this.handleVideoSearch(inputEl.value)
         }
-
-        // Clear loading.
-        this.setLoadingVideos(false);
     }
 
     /**
@@ -96,14 +131,14 @@ class SearchResultsList extends Component {
         container.append(
             $$(UIButton, {
                 label: this.getLabel('Submit')
-            }).on('click', () => {
-                this.handleVideoSearch(document.getElementById('oovvuu-video-search-button').value)
-            })
+            }).on('click', () => { this.handleInputSubmit() } )
         );
 
         // Loading state.
-        if ( true === this.state.loadingVideos) {
+        if (true === this.state.loadingVideos) {
             container.append($$('p').text('Loading videos...'));
+        } else if (false === this.state.loadingVideos && null !== this.state.videosError) {
+            container.append($$('p').text(this.state.videosError));
         } else {
             // Add video items.
             if (this.state.videos && 0 < this.state.videos.length) {
