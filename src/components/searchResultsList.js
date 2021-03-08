@@ -99,10 +99,10 @@ class SearchResultsList extends Component {
      * Handles the input search submission.
      */
     handleInputSubmit() {
-        const searchValue = document.getElementById('oovvuu-video-search-button').value;
+        const inputEl = document.getElementById('oovvuu-video-search-button');
 
-        if ('' !== searchValue) {
-            this.handleVideoSearch(searchValue)
+        if (null !== inputEl && '' !== inputEl.value) {
+            this.handleVideoSearch(inputEl.value)
         }
     }
 
