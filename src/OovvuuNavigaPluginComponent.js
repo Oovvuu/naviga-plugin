@@ -1,7 +1,8 @@
 import { Component } from 'substance';
 import { UIButton } from 'writer';
 import SearchWrapper from './components/searchWrapper';
-import authService from './api/auth.js';
+import authService from './api/auth';
+import * as styles from './OovvuuNavigaPluginComponent.scss';
 
 class OovvuuNavigaPluginComponent extends Component {
 
@@ -29,7 +30,6 @@ class OovvuuNavigaPluginComponent extends Component {
      * Do something after the first render
      */
     didMount() {
-
         // Check if the user is authenticated.
         this.handleSetAuthState(authService.isAuthenticated());
     }
@@ -127,49 +127,43 @@ class OovvuuNavigaPluginComponent extends Component {
      * @param $$
      * @return Components.
      */
-    getComponents($$) {
-        let components = [];
+    getAuthComponents($$) {
+        const components = [];
+        const userAuth = $$('div').addClass(styles.userAuth);
 
         // Not authenticated.
         if ( false === this.state.authenticated ) {
-            components.push($$(UIButton, {
+            const LoginButton = $$(UIButton, {
                 label: this.getLabel('Login'),
-                type: 'default'
-            }).on('click', async() => {
-                this.handleSetAuthState(authService.login())
-            }));
+                type: 'default',
+                onClick: async() => this.handleSetAuthState(authService.login()),
+            });
 
             // Authentication error
             if ( null !== this.state.authenticationError ) {
                 components.push($$('p').text(this.state.authenticationError));
                 components.push($$('p').text('Please contact site admin for support.'));
             }
-        } else if ( true === this.state.authenticated ) {
-            components.push(
-                $$('div').append([
-                    $$(UIButton, {
-                        label: this.getLabel('Logout'),
-                        type: 'alert outlined'
-                    }).on('click', async () => {
-                        authService.logout();
-                    })
-                ]),
-            );
 
+            return userAuth.append([LoginButton, ...components]);
+        } else if ( true === this.state.authenticated ) {
             // Add user info if available.
             if ( this.state.user ) {
-                components.push(
-                    $$('p').append($$('em').text(`Currently logged in as ${this.state.user.email}`))
-                )
+                components.push($$('p').append($$('em').text(`Currently logged in as ${this.state.user.email}`)));
             }
 
-            // Add search results.
-            components.push($$(SearchWrapper))
-        } else if ( null === this.state.authenticated ) {
-            components.push($$('p').text('Loading user...'));
+            const LogoutButton = $$(UIButton, {
+                label: this.getLabel('Logout'),
+                type: 'alert outlined',
+                onClick: async () => {
+                    authService.logout();
+                },
+            });
+
+            return userAuth.append([...components, LogoutButton]);
         }
 
-        return components;
+        return userAuth.append($$('p').text('Loading user...'));
     }
 
     /**
@@ -188,10 +182,14 @@ class OovvuuNavigaPluginComponent extends Component {
         container.append(title);
 
         // Add components.
-        const components = this.getComponents($$);
+        const components = this.getAuthComponents($$);
 
         if (components) {
             container.append(components);
+        }
+
+        if ( true === this.state.authenticated ) {
+            container.append($$(SearchWrapper));
         }
 
         return container
