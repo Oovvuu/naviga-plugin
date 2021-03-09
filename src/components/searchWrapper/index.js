@@ -95,7 +95,7 @@ class SearchWrapper extends Component {
                 this.setLoadingVideos(false);
             })
             .catch((error) => {
-                console.log('Oovvuu API Error', error);
+                console.error('Oovvuu API Error', error);
                 this.setVideosError({
                     message: 'Error connecting to API',
                     supplimental: 'Please contact the site admin.',
