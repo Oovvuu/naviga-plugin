@@ -1,5 +1,5 @@
 import { Component } from 'substance';
-import { UIButton } from 'writer';
+import * as styles from './searchForm.scss';
 
 class SearchForm extends Component {
     /**
@@ -19,21 +19,29 @@ class SearchForm extends Component {
      * @return {VirtualComponent} The SearchForm component.
      */
     render($$) {
-        const container = $$('div');
-
-        const inputField = $$('input')
-            .attr('placeholder', 'Search for videos...')
+        const Input = $$('input')
+            .attr('aria-label', this.getLabel('Search'))
+            .attr('placeholder', 'Search Video Library')
+            .addClass('dw-form-control')
+            .addClass(styles.input)
             .setId('oovvuu-video-search-button');
 
-        // Add search results components.
-        container.append(inputField);
-        container.append(
-            $$(UIButton, {
-                label: this.getLabel('Submit')
-            }).on('click', () => { this.props.handleInputSubmit() } )
-        );
+        const SubmitButton = $$('button')
+            .attr('aria-label', this.getLabel('Submit'))
+            .attr('type', 'submit')
+            .addClass(styles.submit)
+            .append($$('i').addClass('fa fa-search'));
 
-        return container;
+        const Form = $$('form')
+            .addClass(styles.form)
+            .on('submit', (event) => {
+                event.preventDefault();
+                this.props.handleInputSubmit()
+            })
+            // Add child components.
+            .append([Input, SubmitButton]);
+
+        return Form;
     }
 }
 

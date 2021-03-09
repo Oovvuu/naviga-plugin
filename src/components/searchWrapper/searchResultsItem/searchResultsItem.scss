@@ -11,7 +11,8 @@
     grid-template-columns: max-content 1fr;
     grid-template-areas:
         'meta meta'
-        'logo title';
+        'logo title'
+        '. embed';
     padding: rem(5) rem(10);
 }
 
@@ -32,4 +33,17 @@
         padding: 0;
     }
     grid-area: title;
+}
+
+.embed {
+    @include font-props(12, 12, 500);
+    background-color: var(--oovvuu-color-theme);
+    color: var(--oovvuu-color-white);
+    composes: rounded from '../../../scss/shared/theme.scss';
+    composes: uppercase from '../../../scss/shared/text.scss';
+    grid-area: embed;
+    height: rem(20);
+    margin-left: auto;
+    padding: 0 rem(8);
+    width: max-content;
 }
