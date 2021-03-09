@@ -95,7 +95,7 @@ class SearchWrapper extends Component {
                 this.setLoadingVideos(false);
             })
             .catch((error) => {
-                console.log('Oovvuu API Error', error);
+                console.error('Oovvuu API Error', error);
                 this.setVideosError({
                     message: 'Error connecting to API',
                     supplimental: 'Please contact the site admin.',
@@ -142,7 +142,6 @@ class SearchWrapper extends Component {
                 color: 'var(--oovvuu-color-theme)',
             }));
         } else if (false === this.state.loadingVideos && 0 < Object.keys(this.state.videosError).length) {
-            // container.append($$('p').text(this.state.videosError));
             container.append($$(ErrorMessage, { ...this.state.videosError }));
         } else {
             // Add video items.

@@ -31,7 +31,7 @@ class BrightcovePlayer extends Component {
             videoId: this.props.videoId
         })
             .catch((error) => {
-                console.log('Brightcove player error', error);
+                console.error('Brightcove player error', error);
             });
     }
 
