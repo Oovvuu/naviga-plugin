@@ -24,13 +24,13 @@ class SearchForm extends Component {
             .attr('placeholder', 'Search Video Library')
             .addClass('dw-form-control')
             .addClass(styles.input)
-            .setId('oovvuu-video-search-button')
+            .setId('oovvuu-video-search-button');
 
         const SubmitButton = $$('button')
             .attr('aria-label', this.getLabel('Submit'))
             .attr('type', 'submit')
             .addClass(styles.submit)
-            .setInnerHTML('<i class="fa fa-search"></i>')
+            .append($$('i').addClass('fa fa-search'));
 
         const Form = $$('form')
             .addClass(styles.form)
