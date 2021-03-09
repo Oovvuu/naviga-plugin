@@ -3,6 +3,7 @@ import { UISpinner } from 'writer';
 import getLatestVideos from '../../api/getLatestVideos';
 import SearchForm from './searchForm';
 import SearchResultsItem from './searchResultsItem';
+import ErrorMessage from '../errorMessage';
 import * as styles from './searchWrapper.scss';
 
 class SearchWrapper extends Component {
@@ -26,7 +27,7 @@ class SearchWrapper extends Component {
     getInitialState() {
         return {
             videos: [],
-            videosError: null,
+            videosError: {},
             loadingVideos: false,
         }
     }
@@ -72,7 +73,7 @@ class SearchWrapper extends Component {
     async handleVideoSearch ( keywords ) {
         // Set loading.
         this.setLoadingVideos(true);
-        this.setVideosError(null);
+        this.setVideosError({});
 
         // Get the latest videos.
         getLatestVideos( keywords )
@@ -84,7 +85,10 @@ class SearchWrapper extends Component {
                 ) {
                     this.setVideos(response.videoSet.pageResults);
                 } else {
-                    this.setVideosError('Unable to process response, please contact site admin.');
+                    this.setVideosError({
+                        message: "Sorry, we couldn't find a match",
+                        supplimental: 'Please change your search term to improve your video recommendations.',
+                    });
                 }
 
                 // Clear loading.
@@ -92,7 +96,10 @@ class SearchWrapper extends Component {
             })
             .catch((error) => {
                 console.log('Oovvuu API Error', error);
-                this.setVideosError('Encountered error connecting to API, please contact site admin.');
+                this.setVideosError({
+                    message: 'Error connecting to API',
+                    supplimental: 'Please contact the site admin.',
+                });
 
                 // Clear loading.
                 this.setLoadingVideos(false);
@@ -134,8 +141,9 @@ class SearchWrapper extends Component {
                 size: 'medium',
                 color: 'var(--oovvuu-color-theme)',
             }));
-        } else if (false === this.state.loadingVideos && null !== this.state.videosError) {
-            container.append($$('p').text(this.state.videosError));
+        } else if (false === this.state.loadingVideos && 0 < Object.keys(this.state.videosError).length) {
+            // container.append($$('p').text(this.state.videosError));
+            container.append($$(ErrorMessage, { ...this.state.videosError }));
         } else {
             // Add video items.
             if (this.state.videos && 0 < this.state.videos.length) {

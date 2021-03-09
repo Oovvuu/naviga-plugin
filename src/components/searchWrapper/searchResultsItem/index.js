@@ -118,7 +118,7 @@ class SearchResultsListItem extends Component {
         card.append(
             $$('button')
                 .addClass(styles.embed)
-                .addEventListener('click', this.handleAddEmbed)
+                .on('click', this.handleAddEmbed)
                 .setInnerHTML('<i class="fa fa-plus-circle"></i> Add Embed')
         );
 
