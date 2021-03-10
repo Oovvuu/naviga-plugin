@@ -19,13 +19,48 @@ class SearchResultsListItem extends Component {
     }
 
     /**
+     * Return the inital component state before rendering
+     *
+     * @returns {object} Component state.
+     */
+    getInitialState() {
+        return {
+            loadingCreateEmbed: false,
+        };
+    }
+
+    /**
+     * Clears loading create embed.
+     */
+    clearLoadingCreateEmbed() {
+        this.extendState({
+            loadingCreateEmbed: null,
+        });
+    }
+
+    /**
+     * Sets loading create embed.
+     *
+     * @param {Boolean} loading True or false.
+     */
+    setLoadingCreateEmbed(loading) {
+        this.extendState({
+            loadingCreateEmbed: Boolean(loading),
+        });
+    }
+
+    /**
      * Handle creating the Oovvuu embed and add it to the document.
      */
     handleAddEmbed() {
+        this.clearLoadingCreateEmbed();
+
         // Create the embed based on the video ID.
         if (undefined === this.props.video || !this.props.video.id) {
             return;
         }
+
+        this.setLoadingCreateEmbed(true);
 
         createEmbed(this.props.video.id)
             .then((embed) => {
@@ -38,8 +73,10 @@ class SearchResultsListItem extends Component {
                         embed: embed.createVideoEmbed,
                     }
                 );
+                this.setLoadingCreateEmbed(false);
             }).catch((error) => {
                 console.error(error);
+                this.setLoadingCreateEmbed(false);
             });
     }
 
@@ -114,12 +151,21 @@ class SearchResultsListItem extends Component {
                 .addClass(styles.title)
         );
 
+        // Get the icon based on the loading state.
+        let icon;
+
+        if (true === this.state.loadingCreateEmbed) {
+            icon = 'spinner fa-spin';
+        } else {
+            icon = 'plus-circle';
+        }
+
         // Add embed.
         card.append(
             $$('button')
                 .addClass(styles.embed)
                 .on('click', this.handleAddEmbed)
-                .setInnerHTML('<i class="fa fa-plus-circle"></i> Add Embed')
+                .setInnerHTML(`<i class="fa fa-${icon}"></i> Add Embed`)
         );
 
         container.append(card);
