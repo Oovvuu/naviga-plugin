@@ -26,7 +26,7 @@ class SearchResultsListItem extends Component {
     getInitialState() {
         return {
             loadingCreateEmbed: false,
-        }
+        };
     }
 
     /**
@@ -35,7 +35,7 @@ class SearchResultsListItem extends Component {
     clearLoadingCreateEmbed() {
         this.extendState({
             loadingCreateEmbed: null,
-        })
+        });
     }
 
     /**
@@ -43,10 +43,10 @@ class SearchResultsListItem extends Component {
      *
      * @param {Boolean} loading True or false.
      */
-    setLoadingCreateEmbed( loading ) {
+    setLoadingCreateEmbed(loading) {
         this.extendState({
             loadingCreateEmbed: Boolean(loading),
-        })
+        });
     }
 
     /**
