@@ -12,21 +12,23 @@ Naviga is a backend only CMS that acts very similar to Gutenberg. Content is cre
 
 The test site is an environment that is hosted by Naviga where we can perform local development on the plugin without affecting live sites. This is not a typical workflow since we are running code from our localhost directly on the Naviga test site instead of on a local environment.
 
-Follow [this guide](https://docs.navigaglobal.com/writer/developer-guide/index/quickstart#4-add-the-plugin-to-the-local-configuration) to install the plugin on the test site.
+Follow [this guide](https://docs.navigaglobal.com/writer/developer-guide/index/quickstart#4-add-the-plugin-to-the-local-configuration) to install the plugin on the test site. Below are the details for the plugin:
+
+- id: `en.infomaker.oovvuu`
+- name: `oovvuu`
 
 ### Setup Auth0 Config
-The Naviga Writer does not provide any persistent storage, therefore this plugin only has access to client-side storage. Oovvuu uses Auth0 to perform user authentication and an Auth0 app needs to be created by the Oovvuu team to connect with the Oovvuu API. Once this app is setup you can add those credentials to the git ignored `src/api/config.js`. This is the config the plugin will use to create the Auth0 Client. Here is an example config file.
+The Naviga Writer does not provide any persistent storage, therefore this plugin only has access to client-side storage. Oovvuu uses Auth0 to perform user authentication and an Auth0 app needs to be created by the Oovvuu team to connect with the Oovvuu API. Once this app is setup you can add those credentials to the plugin configuration in Naviga.
 
-```js
-export default {
-    domain: 'oovvuu-production.au.auth0.com',
-    client_id: 'xxxxxxxxx', // Provided by Oovvuu team when the app is created.
-    client_secret: 'xxxxxxxxx', // Provided by Oovvuu team when the app is created.
-    audience: 'https://api.prod.oovvuu.io',
-    scope: 'offline_access openid',
-    useRefreshTokens: true,
+```json
+{
+    "domain": "oovvuu-production.au.auth0.com",
+    "client_id": "iFr8JP7mmwsN57EJtaAojVV6uXfho0gG",
+    "audience": "https://api.prod.oovvuu.io"
 }
 ```
+
+![plugin config](./images/plugin-config.png)
 
 ### Builds
 
