@@ -19,13 +19,13 @@ class BrightcovePlayer extends Component {
      */
     getInitialState() {
         return {
-            elementId: `brightcove-player-${this.props.videoId}`
+            elementClass: `brightcove-player-${this.props.location}-${this.props.videoId}`
         };
     }
 
     didMount() {
         brightcovePlayerLoader({
-            refNode: `#${this.state.elementId}`,
+            refNode: `.${this.state.elementClass}`,
             accountId: this.props.accountId,
             playerId: this.props.playerId,
             videoId: this.props.videoId
@@ -43,7 +43,7 @@ class BrightcovePlayer extends Component {
      */
     render($$) {
         return $$('div')
-            .attr('id', this.state.elementId)
+            .addClass(this.state.elementClass)
             .addClass(styles.wrapper);
     }
 }

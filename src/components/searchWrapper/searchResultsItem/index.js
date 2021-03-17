@@ -70,6 +70,7 @@ class SearchResultsListItem extends Component {
                         brightcoveAccountId: this.props.video.preview.brightcoveAccountId,
                         brightcovePlayerId: this.props.video.preview.brightcovePlayerId,
                         brightcoveVideoId: this.props.video.preview.brightcoveVideoId,
+                        embedId: embed.createVideoEmbed.id,
                         embed: embed.createVideoEmbed,
                     }
                 );
@@ -115,6 +116,7 @@ class SearchResultsListItem extends Component {
 
         // Add the player.
         container.append($$(BrightcovePlayer, {
+            location: 'searchResults',
             accountId,
             playerId,
             videoId,

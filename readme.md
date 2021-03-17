@@ -23,7 +23,7 @@ The Naviga Writer does not provide any persistent storage, therefore this plugin
 ```json
 {
     "domain": "oovvuu-production.au.auth0.com",
-    "client_id": "iFr8JP7mmwsN57EJtaAojVV6uXfho0gG",
+    "client_id": "aZfpyRNB2wViuceV3Q87638Gp5TeI0s7",
     "audience": "https://api.prod.oovvuu.io"
 }
 ```
