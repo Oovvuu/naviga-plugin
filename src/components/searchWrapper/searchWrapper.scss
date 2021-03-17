@@ -1,5 +1,4 @@
 .wrapper {
-    max-width: var(--oovvuu-plugin-width);
     width: 100%;
 }
 
@@ -16,4 +15,6 @@
 .list {
     display: grid;
     grid-row-gap: rem(20);
+    max-height: 600px;
+    overflow-y: scroll;
 }
