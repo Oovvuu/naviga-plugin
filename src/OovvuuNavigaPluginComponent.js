@@ -38,8 +38,9 @@ class OovvuuNavigaPluginComponent extends Component {
      * Handles the set auth state based on the resolution of a Promise.
      *
      * @param {Promise} promise Auth promise.
+     * @param {Boolean} showError Whether or not to show auth errors.
      */
-    handleSetAuthState( promise ) {
+    handleSetAuthState( promise, showError = false ) {
         // Clear the auth state.
         this.clearAuthState();
         this.clearAuthErrorState();
@@ -51,7 +52,10 @@ class OovvuuNavigaPluginComponent extends Component {
                 this.setUser(authService.getUser());
             })
             .catch((error) => {
-                this.setAuthErrorState(error);
+                if (showError) {
+                    this.setAuthErrorState(error);
+                }
+
                 this.setAuthState(false);
             });
     }
@@ -136,7 +140,7 @@ class OovvuuNavigaPluginComponent extends Component {
             const LoginButton = $$(UIButton, {
                 label: this.getLabel('Login'),
                 type: 'default',
-                onClick: async() => this.handleSetAuthState(authService.login()),
+                onClick: async() => this.handleSetAuthState(authService.login(), true),
             });
 
             // Authentication error

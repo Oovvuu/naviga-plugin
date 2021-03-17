@@ -9,6 +9,7 @@ class OovvuuCommand extends WriterCommand {
                 brightcoveAccountId: params.brightcoveAccountId,
                 brightcovePlayerId: params.brightcovePlayerId,
                 brightcoveVideoId: params.brightcoveVideoId,
+                embedId: params.embedId,
                 embed: JSON.stringify(params.embed),
             })
         })
