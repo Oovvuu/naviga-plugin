@@ -20,7 +20,10 @@ webpack/
 images/
 .babelrc
 .editorconfig
-.eslintrc
+.eslintrc.js
 package.json
 package-lock.json
 postcss.config.js
+
+# Release script
+release.sh
