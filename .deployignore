@@ -1,0 +1,29 @@
+# Ignore temporary OS files
+.DS_Store
+.DS_Store?
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.thumbsdb
+
+# IDE files
+*.code-workspace
+.idea
+.vscode
+
+node_modules/
+
+# Source Files
+src/
+webpack/
+images/
+.babelrc
+.editorconfig
+.eslintrc.js
+package.json
+package-lock.json
+postcss.config.js
+
+# Release script
+release.sh
