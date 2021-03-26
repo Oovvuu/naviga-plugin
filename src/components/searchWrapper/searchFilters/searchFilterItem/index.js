@@ -19,10 +19,13 @@ class SearchFilterItem extends Component {
      */
     render($$) {
         const Select = $$('select');
-        const genrePlaceholder = $$('option').text(`Filter By ${this.props.label}`);
-        genrePlaceholder.attr('disabled', true);
-        genrePlaceholder.attr('selected', true);
-        Select.append(genrePlaceholder);
+        Select.attr('id', `oovvuu-video-search-filter-${this.props.label.toLowerCase()}` );
+
+        const placeholder = $$('option').text(`Filter By ${this.props.label}`);
+        placeholder.attr('value', '');
+        placeholder.attr('disabled', true);
+        placeholder.attr('selected', true);
+        Select.append(placeholder);
 
         for (let index = 0; index < this.props.data.length; index++) {
             const option = $$('option').attr('value', this.props.data[index].id);

@@ -68,15 +68,15 @@ class SearchWrapper extends Component {
     /**
      * Performs an API call to get videos based on keywords.
      *
-     * @param {String} keywords Search keywords.
+     * @param {object} filters Search filters.
      */
-    async handleVideoSearch( keywords ) {
+    async handleVideoSearch( filters ) {
         // Set loading.
         this.setLoadingVideos(true);
         this.setVideosError({});
 
         // Get the latest videos.
-        getLatestVideos( keywords )
+        getLatestVideos( filters )
             .then((response) => {
                 // Success
                 if (
@@ -111,9 +111,26 @@ class SearchWrapper extends Component {
      */
     handleInputSubmit() {
         const inputEl = document.getElementById('oovvuu-video-search-button');
+        const genreEl = document.getElementById('oovvuu-video-search-filter-genres');
+        const providerEl = document.getElementById('oovvuu-video-search-filter-providers');
+
+        let filters = {};
 
         if (null !== inputEl && '' !== inputEl.value) {
-            this.handleVideoSearch(inputEl.value)
+            filters.keywordMatch = inputEl.value;
+        }
+
+        if (null !== genreEl && '' !== genreEl.value) {
+            filters.genre = genreEl.value;
+        }
+
+        if (null !== providerEl && '' !== providerEl.value) {
+            filters.provider = providerEl.value;
+        }
+
+        // Handle the search with filters.
+        if (filters) {
+            this.handleVideoSearch(filters);
         }
     }
 

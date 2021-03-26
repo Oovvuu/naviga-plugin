@@ -1,12 +1,12 @@
 import request from './graphql.js'
 
 /**
- * Gets the latest videos based on a keyword search.
+ * Gets the latest videos.
  *
- * @param  {string} keywords A string of keywords.
+ * @param  {object} filters Video filters.
  * @return {Promise} The API request.
  */
-const getLatestVideos = (keywords) => {
+const getLatestVideos = (filters) => {
     const query = `
     query ($input: VideoSetInput!, $playbackInput: PlaybackInput! ) {
       videoSet (input: $input) {
@@ -47,7 +47,7 @@ const getLatestVideos = (keywords) => {
       duration
       created
       modified
-      activeSince
+      activatedAt
       providerAssetId
     }
     `
@@ -60,7 +60,7 @@ const getLatestVideos = (keywords) => {
                 "ascending": false
             },
             "filter": {
-                "keywordMatch": keywords,
+                ...filters,
                 "status": [
                     "Active"
                 ]
