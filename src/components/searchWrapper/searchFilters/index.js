@@ -28,7 +28,7 @@ class SearchFilters extends Component {
         }));
         container.append($$(SearchFilterItem, {
             label: 'Providers',
-            data: this.props.providers,
+            data: this.props?.providers,
             value: this.props?.filters?.provider || null,
         }));
 
