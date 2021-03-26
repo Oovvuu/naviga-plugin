@@ -110,22 +110,19 @@ class SearchWrapper extends Component {
      * Handles the input search submission.
      */
     handleInputSubmit() {
-        const inputEl = document.getElementById('oovvuu-video-search-button');
-        const genreEl = document.getElementById('oovvuu-video-search-filter-genres');
-        const providerEl = document.getElementById('oovvuu-video-search-filter-providers');
+        const filterEls = {
+            'keywordMatch': 'oovvuu-video-search-button',
+            'genre': 'oovvuu-video-search-filter-genres',
+            'provider': 'oovvuu-video-search-filter-providers',
+        };
 
         let filters = {};
+        for (const [key, value] of Object.entries(filterEls)) {
+            const el = document.getElementById(value);
 
-        if (null !== inputEl && '' !== inputEl.value) {
-            filters.keywordMatch = inputEl.value;
-        }
-
-        if (null !== genreEl && '' !== genreEl.value) {
-            filters.genre = genreEl.value;
-        }
-
-        if (null !== providerEl && '' !== providerEl.value) {
-            filters.provider = providerEl.value;
+            if (null !== el && '' !== el.value) {
+                filters[key] = el.value;
+            }
         }
 
         // Handle the search with filters.
