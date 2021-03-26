@@ -2,6 +2,8 @@ import { Component } from 'substance';
 import { UIButton } from 'writer';
 import SearchWrapper from './components/searchWrapper';
 import authService from './api/auth';
+import getGenres from './api/getGenres';
+import getProviders from './api/getProviders';
 import * as styles from './OovvuuNavigaPluginComponent.scss';
 
 class OovvuuNavigaPluginComponent extends Component {
@@ -23,6 +25,8 @@ class OovvuuNavigaPluginComponent extends Component {
         return {
             authenticated: null,
             authenticationError: null,
+            genres: [],
+            providers: [],
         }
     }
 
@@ -32,6 +36,18 @@ class OovvuuNavigaPluginComponent extends Component {
     didMount() {
         // Check if the user is authenticated.
         this.handleSetAuthState(authService.isAuthenticated());
+
+        // Get the genres and prodivers filters.
+        getGenres().then((genres) => {
+            this.setGenres(genres.__type.enumValues.map((item) => { return { id: item.name, name: item.name } }));
+        }).catch((error) => {
+            console.log('Error', error);
+        });
+        getProviders().then((providers) => {
+            this.setProviders(providers.organisationSet.pageResults);
+        }).catch((error) => {
+            console.log('Error', error);
+        });
     }
 
     /**
@@ -126,6 +142,28 @@ class OovvuuNavigaPluginComponent extends Component {
     }
 
     /**
+     * Sets genres.
+     *
+     * @param {Array} genres An array of genres.
+     */
+    setGenres( genres ) {
+        this.extendState({
+            genres: genres,
+        })
+    }
+
+    /**
+     * Sets providers.
+     *
+     * @param {Array} providers An array of providers.
+     */
+    setProviders( providers ) {
+        this.extendState({
+            providers: providers,
+        })
+    }
+
+    /**
      * Get based components based on authentication.
      *
      * @param $$
@@ -193,7 +231,7 @@ class OovvuuNavigaPluginComponent extends Component {
         }
 
         if ( true === this.state.authenticated ) {
-            container.append($$(SearchWrapper));
+            container.append($$(SearchWrapper, { genres: this.state.genres, providers: this.state.providers }));
         }
 
         return container

@@ -1,4 +1,5 @@
 import { Component } from 'substance';
+import SearchFilters from '../searchFilters';
 import * as styles from './searchForm.scss';
 
 class SearchForm extends Component {
@@ -32,6 +33,8 @@ class SearchForm extends Component {
             .addClass(styles.submit)
             .append($$('i').addClass('fa fa-search'));
 
+        const Filters = $$(SearchFilters, { genres: this.props.genres, providers: this.props.providers });
+
         const Form = $$('form')
             .addClass(styles.form)
             .on('submit', (event) => {
@@ -39,7 +42,7 @@ class SearchForm extends Component {
                 this.props.handleInputSubmit()
             })
             // Add child components.
-            .append([Input, SubmitButton]);
+            .append([Input, SubmitButton, Filters]);
 
         return Form;
     }

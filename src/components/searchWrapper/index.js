@@ -70,7 +70,7 @@ class SearchWrapper extends Component {
      *
      * @param {String} keywords Search keywords.
      */
-    async handleVideoSearch ( keywords ) {
+    async handleVideoSearch( keywords ) {
         // Set loading.
         this.setLoadingVideos(true);
         this.setVideosError({});
@@ -128,7 +128,7 @@ class SearchWrapper extends Component {
 
         // Add the search form.
         container.append(
-            $$(SearchForm, { handleInputSubmit: this.handleInputSubmit })
+            $$(SearchForm, { handleInputSubmit: this.handleInputSubmit, genres: this.props.genres, providers: this.props.providers })
         );
 
         const heading = $$('h2')
