@@ -29,6 +29,7 @@ class SearchWrapper extends Component {
             videos: [],
             videosError: {},
             loadingVideos: false,
+            filters: {}
         }
     }
 
@@ -66,17 +67,29 @@ class SearchWrapper extends Component {
     }
 
     /**
+     * Sets filters
+     *
+     * @param {object} filters Search filters.
+     */
+    setFilters( filters ) {
+        this.extendState({
+            filters: filters,
+        })
+    }
+
+    /**
      * Performs an API call to get videos based on keywords.
      *
-     * @param {String} keywords Search keywords.
+     * @param {object} filters Search filters.
      */
-    async handleVideoSearch ( keywords ) {
+    async handleVideoSearch( filters ) {
         // Set loading.
         this.setLoadingVideos(true);
         this.setVideosError({});
+        this.setFilters(filters);
 
         // Get the latest videos.
-        getLatestVideos( keywords )
+        getLatestVideos( filters )
             .then((response) => {
                 // Success
                 if (
@@ -110,10 +123,24 @@ class SearchWrapper extends Component {
      * Handles the input search submission.
      */
     handleInputSubmit() {
-        const inputEl = document.getElementById('oovvuu-video-search-button');
+        const filterEls = {
+            'keywordMatch': 'oovvuu-video-search-button',
+            'genre': 'oovvuu-video-search-filter-genres',
+            'provider': 'oovvuu-video-search-filter-providers',
+        };
 
-        if (null !== inputEl && '' !== inputEl.value) {
-            this.handleVideoSearch(inputEl.value)
+        let filters = {};
+        for (const [key, value] of Object.entries(filterEls)) {
+            const el = document.getElementById(value);
+
+            if (null !== el && '' !== el.value) {
+                filters[key] = el.value;
+            }
+        }
+
+        // Handle the search with filters.
+        if (filters) {
+            this.handleVideoSearch(filters);
         }
     }
 
@@ -128,7 +155,12 @@ class SearchWrapper extends Component {
 
         // Add the search form.
         container.append(
-            $$(SearchForm, { handleInputSubmit: this.handleInputSubmit })
+            $$(SearchForm, {
+                handleInputSubmit: this.handleInputSubmit,
+                genres: this.props.genres,
+                providers: this.props.providers,
+                filters: this.state.filters,
+            })
         );
 
         const heading = $$('h2')

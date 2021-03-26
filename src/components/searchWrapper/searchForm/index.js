@@ -1,4 +1,5 @@
 import { Component } from 'substance';
+import SearchFilters from '../searchFilters';
 import * as styles from './searchForm.scss';
 
 class SearchForm extends Component {
@@ -26,11 +27,21 @@ class SearchForm extends Component {
             .addClass(styles.input)
             .setId('oovvuu-video-search-button');
 
+        if (undefined !== this.props.filters.keywordMatch) {
+            Input.attr('value', this.props.filters.keywordMatch);
+        }
+
         const SubmitButton = $$('button')
             .attr('aria-label', this.getLabel('Submit'))
             .attr('type', 'submit')
             .addClass(styles.submit)
             .append($$('i').addClass('fa fa-search'));
+
+        const Filters = $$(SearchFilters, {
+            genres: this.props.genres,
+            providers: this.props.providers,
+            filters: this.props.filters,
+        });
 
         const Form = $$('form')
             .addClass(styles.form)
@@ -39,7 +50,7 @@ class SearchForm extends Component {
                 this.props.handleInputSubmit()
             })
             // Add child components.
-            .append([Input, SubmitButton]);
+            .append([Input, SubmitButton, Filters]);
 
         return Form;
     }
