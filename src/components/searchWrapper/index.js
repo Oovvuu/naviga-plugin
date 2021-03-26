@@ -29,6 +29,7 @@ class SearchWrapper extends Component {
             videos: [],
             videosError: {},
             loadingVideos: false,
+            filters: {}
         }
     }
 
@@ -66,6 +67,17 @@ class SearchWrapper extends Component {
     }
 
     /**
+     * Sets filters
+     *
+     * @param {object} filters Search filters.
+     */
+    setFilters( filters ) {
+        this.extendState({
+            filters: filters,
+        })
+    }
+
+    /**
      * Performs an API call to get videos based on keywords.
      *
      * @param {object} filters Search filters.
@@ -74,6 +86,7 @@ class SearchWrapper extends Component {
         // Set loading.
         this.setLoadingVideos(true);
         this.setVideosError({});
+        this.setFilters(filters);
 
         // Get the latest videos.
         getLatestVideos( filters )
@@ -142,7 +155,12 @@ class SearchWrapper extends Component {
 
         // Add the search form.
         container.append(
-            $$(SearchForm, { handleInputSubmit: this.handleInputSubmit, genres: this.props.genres, providers: this.props.providers })
+            $$(SearchForm, {
+                handleInputSubmit: this.handleInputSubmit,
+                genres: this.props.genres,
+                providers: this.props.providers,
+                filters: this.state.filters,
+            })
         );
 
         const heading = $$('h2')

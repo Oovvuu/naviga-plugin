@@ -24,12 +24,21 @@ class SearchFilterItem extends Component {
         const placeholder = $$('option').text(`Filter By ${this.props.label}`);
         placeholder.attr('value', '');
         placeholder.attr('disabled', true);
-        placeholder.attr('selected', true);
+
+        if (!this.props.value) {
+            placeholder.attr('selected', true);
+        }
+
         Select.append(placeholder);
 
         for (let index = 0; index < this.props.data.length; index++) {
             const option = $$('option').attr('value', this.props.data[index].id);
             option.text(this.props.data[index].name);
+
+            if (this.props.value && this.props.value === this.props.data[index].id) {
+                option.attr('selected', true);
+            }
+
             Select.append(option);
         }
 

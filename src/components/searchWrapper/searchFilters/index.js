@@ -21,8 +21,16 @@ class SearchFilters extends Component {
     render($$) {
         const container = $$('div');
 
-        container.append($$(SearchFilterItem, { label: 'Genres', data: this.props.genres }));
-        container.append($$(SearchFilterItem, { label: 'Providers', data: this.props.providers }));
+        container.append($$(SearchFilterItem, {
+            label: 'Genres',
+            data: this.props.genres,
+            value: undefined !== this.props.filters.genre ? this.props.filters.genre : null,
+        }));
+        container.append($$(SearchFilterItem, {
+            label: 'Providers',
+            data: this.props.providers,
+            value: undefined !== this.props.filters.provider ? this.props.filters.provider : null,
+        }));
 
         return container;
     }
