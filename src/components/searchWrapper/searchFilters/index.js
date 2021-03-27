@@ -23,13 +23,13 @@ class SearchFilters extends Component {
 
         container.append($$(SearchFilterItem, {
             label: 'Genres',
-            data: this.props?.genres,
-            value: this.props?.filters?.genre || null,
+            data: this.props.genres,
+            value: this.props.filters.genre || null,
         }));
         container.append($$(SearchFilterItem, {
             label: 'Providers',
-            data: this.props?.providers,
-            value: this.props?.filters?.provider || null,
+            data: this.props.providers,
+            value: this.props.filters.provider || null,
         }));
 
         return container;

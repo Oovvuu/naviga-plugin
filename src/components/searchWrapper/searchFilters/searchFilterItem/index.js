@@ -18,28 +18,45 @@ class SearchFilterItem extends Component {
      * @return {VirtualComponent} The SearchForm component.
      */
     render($$) {
+        const {
+            data,
+            label,
+            value,
+        } = this.props;
+
         const Select = $$('select');
-        Select.attr('id', `oovvuu-video-search-filter-${this.props.label.toLowerCase()}` );
+        Select.attr('id', `oovvuu-video-search-filter-${label.toLowerCase()}` );
 
-        const placeholder = $$('option').text(`Filter By ${this.props.label}`);
-        placeholder.attr('value', '');
-        placeholder.attr('disabled', true);
-
-        if (!this.props.value) {
+        // Check if we have an empty set of data. If so indicate that we are
+        // loading results.
+        if (0 === data.length) {
+            const placeholder = $$('option').text(`Loading ${label}`);
+            placeholder.attr('value', '');
+            placeholder.attr('disabled', true);
             placeholder.attr('selected', true);
-        }
 
-        Select.append(placeholder);
+            Select.append(placeholder);
+        } else {
+            const placeholder = $$('option').text(`Filter By ${label}`);
+            placeholder.attr('value', '');
+            placeholder.attr('disabled', true);
 
-        for (let index = 0; index < this.props.data.length; index++) {
-            const option = $$('option').attr('value', this.props.data[index].id);
-            option.text(this.props.data[index].name);
-
-            if (this.props.value && this.props.value === this.props.data[index].id) {
-                option.attr('selected', true);
+            if (!value) {
+                placeholder.attr('selected', true);
             }
 
-            Select.append(option);
+            Select.append(placeholder);
+
+            for (let index = 0; index < data.length; index++) {
+                const option = $$('option').attr('value', data[index].id);
+                option.text(data[index].name);
+
+                if (value && value === data[index].id) {
+                    option.attr('selected', true);
+                }
+
+                Select.append(option);
+            }
         }
 
         return Select;
