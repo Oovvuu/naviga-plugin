@@ -48,7 +48,7 @@ class SearchForm extends Component {
         })
             .addClass(styles.filters);
 
-        const Form = $$('form')
+        return $$('form')
             .addClass(styles.form)
             .on('submit', (event) => {
                 event.preventDefault();
@@ -56,8 +56,6 @@ class SearchForm extends Component {
             })
             // Add child components.
             .append([InputWrapper, Filters]);
-
-        return Form;
     }
 }
 
