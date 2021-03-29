@@ -240,26 +240,30 @@ class OovvuuNavigaPluginComponent extends Component {
      * @return Components.
      */
     render($$) {
+        const header = $$('div')
+            .addClass(styles.header)
+            .append([
+                $$('div')
+                    .addClass(styles.logoWrapper)
+                    .append([
+                        $$('a').addClass(styles.logo),
+                        $$('h3')
+                            .addClass(styles.heading)
+                            .append(this.getLabel('Oovvuu Video Search')),
+                    ]),
+                this.getAuthComponents($$)
+            ]);
+
         const container = $$('div')
             .addClass(styles.wrapper)
-            .append(
-                $$('div')
-                    .addClass(styles.header)
-                    .append([
-                        $$('div')
-                            .addClass(styles.logoWrapper)
-                            .append([
-                                $$('a').addClass(styles.logo),
-                                $$('h3')
-                                    .addClass(styles.heading)
-                                    .append(this.getLabel('Oovvuu Video Search')),
-                            ]),
-                        this.getAuthComponents($$)
-                    ])
-            );
+            .append(header);
 
         if ( true === this.state.authenticated ) {
-            container.append($$(SearchWrapper, { genres: this.state.genres, providers: this.state.providers }));
+            container.append($$(SearchWrapper,
+                {
+                    genres: this.state.genres,
+                    providers: this.state.providers
+                }));
         }
 
         return container
