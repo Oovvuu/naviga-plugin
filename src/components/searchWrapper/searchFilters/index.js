@@ -26,13 +26,12 @@ class SearchFilters extends Component {
             data: this.props.genres,
             value: this.props.filters.genre || null,
         }));
-        container.append($$(SearchFilterItem, {
+
+        return container.append($$(SearchFilterItem, {
             label: 'Providers',
             data: this.props.providers,
             value: this.props.filters.provider || null,
         }));
-
-        return container;
     }
 }
 
