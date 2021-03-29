@@ -37,11 +37,16 @@ class SearchForm extends Component {
             .addClass(styles.submit)
             .append($$('i').addClass('fa fa-search'));
 
+        const InputWrapper = $$('div')
+            .addClass(styles.wrapper)
+            .append([Input, SubmitButton]);
+
         const Filters = $$(SearchFilters, {
             genres: this.props.genres,
             providers: this.props.providers,
             filters: this.props.filters,
-        });
+        })
+            .addClass(styles.filters);
 
         const Form = $$('form')
             .addClass(styles.form)
@@ -50,7 +55,7 @@ class SearchForm extends Component {
                 this.props.handleInputSubmit()
             })
             // Add child components.
-            .append([Input, SubmitButton, Filters]);
+            .append([InputWrapper, Filters]);
 
         return Form;
     }

@@ -27,6 +27,7 @@ class SearchWrapper extends Component {
     getInitialState() {
         return {
             videos: [],
+            videosTotalCount: 0,
             videosError: {},
             loadingVideos: false,
             filters: {}
@@ -40,7 +41,18 @@ class SearchWrapper extends Component {
      */
     setVideos( videos ) {
         this.extendState({
-            videos: videos,
+            videos: videos
+        })
+    }
+
+    /**
+     * Sets total count of videos.
+     *
+     * @param {Integer} totalCount Total number of videos.
+     */
+    setVideosTotal( totalCount ) {
+        this.extendState({
+            videosTotalCount: totalCount,
         })
     }
 
@@ -94,9 +106,10 @@ class SearchWrapper extends Component {
                 // Success
                 if (
                     undefined !== response.videoSet.pageResults
-                  && 0 < response.videoSet.pageResults.length
+                    && 0 < response.videoSet.pageResults.length
                 ) {
                     this.setVideos(response.videoSet.pageResults);
+                    this.setVideosTotal(response.videoSet.totalCount);
                 } else {
                     this.setVideosError({
                         message: "Sorry, we couldn't find a match",
@@ -163,34 +176,41 @@ class SearchWrapper extends Component {
             })
         );
 
-        const heading = $$('h2')
-            .addClass(styles.heading)
-            .text('Latest Videos');
-
         // Loading state.
         if (true === this.state.loadingVideos) {
-            container.append($$(UISpinner, {
+            return container.append($$(UISpinner, {
                 size: 'medium',
                 color: 'var(--oovvuu-color-theme)',
             }));
-        } else if (false === this.state.loadingVideos && 0 < Object.keys(this.state.videosError).length) {
-            container.append($$(ErrorMessage, { ...this.state.videosError }));
-        } else {
-            // Add video items.
-            if (this.state.videos && 0 < this.state.videos.length) {
-                const list = $$('ol').addClass(styles.list);
+        }
 
-                for (var index = 0; index < this.state.videos.length; index++) {
-                    const item = $$('li');
+        // Error.
+        if (false === this.state.loadingVideos && 0 < Object.keys(this.state.videosError).length) {
+            return container.append($$(ErrorMessage, { ...this.state.videosError }));
+        }
 
-                    item.append($$(SearchResultsItem, {
-                        video: this.state.videos[index],
-                    }));
+        // Add video items.
+        if (this.state.videos && 0 < this.state.videos.length) {
+            const list = $$('ol').addClass(styles.list);
 
-                    list.append(item);
-                }
-                container.append([heading, list]);
+            for (var index = 0; index < this.state.videos.length; index++) {
+                const item = $$('li');
+
+                item.append($$(SearchResultsItem, {
+                    video: this.state.videos[index],
+                }));
+
+                list.append(item);
             }
+
+            const heading = $$('h2')
+                .addClass(styles.heading)
+                .text(`Showing ${this.state.videos.length} of ${this.state.videosTotalCount}`);
+
+            container.append([
+                heading,
+                list
+            ]);
         }
 
         return container

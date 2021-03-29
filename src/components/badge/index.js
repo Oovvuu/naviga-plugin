@@ -22,11 +22,9 @@ class Badge extends Component {
      * @return {VirtualComponent} The Badge component.
      */
     render($$) {
-        const { text } = this.props;
-
         return $$('span')
             .addClass(styles.badge)
-            .setTextContent(text);
+            .setTextContent(this.props.text);
     }
 }
 
