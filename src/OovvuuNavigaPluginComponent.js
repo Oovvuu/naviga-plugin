@@ -1,5 +1,4 @@
 import { Component } from 'substance';
-import { UIButton } from 'writer';
 import SearchWrapper from './components/searchWrapper';
 import authService from './api/auth';
 import getGenres from './api/getGenres';
@@ -196,11 +195,12 @@ class OovvuuNavigaPluginComponent extends Component {
 
         // Not authenticated.
         if ( false === this.state.authenticated ) {
-            const LoginButton = $$(UIButton, {
-                label: this.getLabel('Login'),
-                type: 'default',
-                onClick: async () => this.handleSetAuthState(authService.login(), true),
-            });
+            const LoginButton = $$('button')
+                .addClass(styles.login)
+                .on('click', async () => this.handleSetAuthState(
+                    authService.login(), true)
+                )
+                .setInnerHTML('Login')
 
             // Authentication error
             if ( null !== this.state.authenticationError ) {
@@ -222,9 +222,7 @@ class OovvuuNavigaPluginComponent extends Component {
 
             const LogoutButton = $$('button')
                 .addClass(styles.logout)
-                .on('click', async () => {
-                    authService.logout();
-                })
+                .on('click', async () => { authService.logout(); })
                 .setInnerHTML('Logout')
 
             return userAuth.append([...components, LogoutButton]);
@@ -258,15 +256,16 @@ class OovvuuNavigaPluginComponent extends Component {
             .addClass(styles.wrapper)
             .append(header);
 
-        if ( true === this.state.authenticated ) {
-            container.append($$(SearchWrapper,
-                {
-                    genres: this.state.genres,
-                    providers: this.state.providers
-                }));
+        if ( true !== this.state.authenticated ) {
+            return container;
         }
 
-        return container
+        return container.append(
+            $$(SearchWrapper, {
+                genres: this.state.genres,
+                providers: this.state.providers
+            })
+        );
     }
 }
 
