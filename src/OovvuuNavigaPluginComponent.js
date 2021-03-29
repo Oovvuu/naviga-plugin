@@ -37,12 +37,26 @@ class OovvuuNavigaPluginComponent extends Component {
         // Check if the user is authenticated.
         this.handleSetAuthState(authService.isAuthenticated());
 
-        // Get the genres and prodivers filters.
+        // Load filters data.
+        this.handleLoadFiltersData();
+    }
+
+    /**
+     * Loads the filter data from the API into component state.
+     */
+    handleLoadFiltersData() {
+        /**
+         * Genres.
+         */
         getGenres().then((genres) => {
             this.setGenres(genres.__type.enumValues.map((item) => { return { id: item.name, name: item.name } }));
         }).catch((error) => {
             console.log('Error', error);
         });
+
+        /**
+         * Providers.
+         */
         getProviders().then((providers) => {
             this.setProviders(providers.organisationSet.pageResults);
         }).catch((error) => {
@@ -66,6 +80,7 @@ class OovvuuNavigaPluginComponent extends Component {
             .then(() => {
                 this.setAuthState(true);
                 this.setUser(authService.getUser());
+                this.handleLoadFiltersData();
             })
             .catch((error) => {
                 if (showError) {
