@@ -1,16 +1,13 @@
 .form {
-    align-items: center;
     display: grid;
 }
 
 .wrapper {
-    align-items: center;
     display: flex;
     margin-bottom: rem(20);
 }
 
 .filters {
-    align-items: center;
     display: grid;
     grid-gap: rem(20);
     grid-template-columns: repeat(2, 1fr);

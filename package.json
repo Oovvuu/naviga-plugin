@@ -8,13 +8,13 @@
         "build": "webpack --config webpack/webpack.prod.js --progress"
     },
     "devDependencies": {
-        "@babel/cli": "^7.8.4",
-        "@babel/core": "^7.9.0",
+        "@babel/cli": "^7.13.14",
+        "@babel/core": "^7.13.14",
         "@babel/plugin-proposal-class-properties": "^7.13.0",
-        "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+        "@babel/plugin-proposal-object-rest-spread": "^7.13.8",
         "@babel/plugin-proposal-optional-chaining": "^7.13.12",
         "@babel/plugin-transform-async-to-generator": "^7.4.4",
-        "@babel/preset-env": "^7.4.5",
+        "@babel/preset-env": "^7.13.12",
         "autoprefixer": "^10.2.5",
         "babel-loader": "^8.0.6",
         "css-loader": "^3.0.0",
@@ -24,7 +24,7 @@
         "mini-css-extract-plugin": "^0.7.0",
         "node-sass": "^4.13.1",
         "optimize-css-assets-webpack-plugin": "^5.0.1",
-        "postcss": "^8.2.7",
+        "postcss": "^8.2.8",
         "postcss-loader": "^4.2.0",
         "postcss-units": "^1.2.1",
         "sass-loader": "^10.1.1",
@@ -38,7 +38,7 @@
         "webpack-merge": "^4.2.1"
     },
     "dependencies": {
-        "@auth0/auth0-spa-js": "^1.13.6",
+        "@auth0/auth0-spa-js": "^1.14.0",
         "@brightcove/player-loader": "^1.8.0",
         "date-fns": "^2.19.0",
         "graphql": "^15.5.0",
