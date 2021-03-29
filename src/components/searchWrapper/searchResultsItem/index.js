@@ -26,6 +26,7 @@ class SearchResultsListItem extends Component {
     getInitialState() {
         return {
             loadingCreateEmbed: false,
+            embeded: 0,
         };
     }
 
@@ -35,6 +36,15 @@ class SearchResultsListItem extends Component {
     clearLoadingCreateEmbed() {
         this.extendState({
             loadingCreateEmbed: null,
+        });
+    }
+
+    /**
+     * Save embeded ID.
+     */
+    embedItem( id ) {
+        this.extendState({
+            embeded: id,
         });
     }
 
@@ -75,6 +85,7 @@ class SearchResultsListItem extends Component {
                     }
                 );
                 this.setLoadingCreateEmbed(false);
+                this.embedItem(this.props.video.id);
             }).catch((error) => {
                 console.error(error);
                 this.setLoadingCreateEmbed(false);
@@ -110,23 +121,22 @@ class SearchResultsListItem extends Component {
             }
         } = this.props;
 
+        // Add the player.
         const container = $$('article')
             .setId(id)
-            .addClass(styles.wrapper);
-
-        // Add the player.
-        container.append($$(BrightcovePlayer, {
-            location: 'searchResults',
-            accountId,
-            playerId,
-            videoId,
-            embedOptions: { responsive: true },
-            options: { // Video.js options.
-                fluid: true,
-                aspectRatio: '16:9',
-                width: 250,
-            },
-        }));
+            .addClass(styles.wrapper)
+            .append($$(BrightcovePlayer, {
+                location: 'searchResults',
+                accountId,
+                playerId,
+                videoId,
+                embedOptions: { responsive: true },
+                options: { // Video.js options.
+                    fluid: true,
+                    aspectRatio: '16:9',
+                    width: 250,
+                },
+            }));
 
         const card = $$('div').addClass(styles.card);
 
@@ -153,26 +163,44 @@ class SearchResultsListItem extends Component {
                 .addClass(styles.title)
         );
 
-        // Get the icon based on the loading state.
+        // Buttion icon and text.
         let icon;
+        let iconText;
 
-        if (true === this.state.loadingCreateEmbed) {
-            icon = 'spinner fa-spin';
-        } else {
-            icon = 'plus-circle';
+        switch(true) {
+            // Get the icon based on the loading state.
+            case (true === this.state.loadingCreateEmbed):
+                icon = 'fa-spinner fa-spin'
+                iconText = 'Adding'
+                break;
+
+            // Get the icon based on the enbeded video.
+            case (Number(id) === Number(this.state.embeded)):
+                icon = 'fa-check';
+                iconText = 'Added'
+                break;
+
+            // Default.
+            default:
+                iconText = 'Add Embed'
+                icon = 'fa-plus-circle';
         }
+
+        // Get the icon based on the loading state.
+        let embedStatus = (Number(id) === Number(this.state.embeded))
+            ? styles.embeded
+            : '';
 
         // Add embed.
         card.append(
             $$('button')
                 .addClass(styles.embed)
+                .addClass(embedStatus)
                 .on('click', this.handleAddEmbed)
-                .setInnerHTML(`<i class="fa fa-${icon}"></i> Add Embed`)
+                .setInnerHTML(`<i class="fa ${icon}"></i> ${iconText}`)
         );
 
-        container.append(card);
-
-        return container
+        return container.append(card);
     }
 }
 

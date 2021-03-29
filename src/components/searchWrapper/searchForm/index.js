@@ -46,7 +46,7 @@ class SearchForm extends Component {
             providers: this.props.providers,
             filters: this.props.filters,
         })
-            .addClass(styles.filter);
+            .addClass(styles.filters);
 
         const Form = $$('form')
             .addClass(styles.form)

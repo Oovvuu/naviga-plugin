@@ -13,7 +13,7 @@
         'meta meta'
         'logo title'
         '. embed';
-    padding: rem(5) rem(10);
+    padding: rem(10) rem(15) rem(15);
 }
 
 .meta {
@@ -36,14 +36,21 @@
 }
 
 .embed {
-    @include font-props(12, 12, 500);
+    @include font-props(16, 12, medium);
     background-color: var(--oovvuu-color-theme);
     color: var(--oovvuu-color-white);
     composes: rounded from '../../../scss/shared/theme.scss';
     composes: uppercase from '../../../scss/shared/text.scss';
     grid-area: embed;
-    height: rem(20);
     margin-left: auto;
-    padding: 0 rem(8);
+    padding: rem(10);
     width: max-content;
+
+    i {
+        padding-right: rem(8);
+    }
+}
+
+.embeded {
+    background-color: var(--oovvuu-color-gray);
 }

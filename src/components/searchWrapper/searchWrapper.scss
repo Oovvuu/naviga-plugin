@@ -6,10 +6,10 @@
     @include override-plugin-styles {
         @include font-props(16, 22, semibold);
     };
-    border-bottom: 1px solid var(--oovvuu-color-gray-light);
     composes: uppercase from '../../scss/shared/text.scss';
     margin-bottom: rem(20);
     padding: 0 0 rem(5) 0;
+    text-transform: none;
 }
 
 .list {
