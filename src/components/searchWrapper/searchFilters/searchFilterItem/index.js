@@ -40,7 +40,6 @@ class SearchFilterItem extends Component {
 
         const placeholder = $$('option').text(`Filter By ${label}`);
         placeholder.attr('value', '');
-        placeholder.attr('disabled', true);
 
         if (!value) {
             placeholder.attr('selected', true);
