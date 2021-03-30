@@ -1,5 +1,4 @@
 import { Component } from 'substance';
-import { UIButton } from 'writer';
 import SearchWrapper from './components/searchWrapper';
 import authService from './api/auth';
 import getGenres from './api/getGenres';
@@ -49,7 +48,12 @@ class OovvuuNavigaPluginComponent extends Component {
          * Genres.
          */
         getGenres().then((genres) => {
-            this.setGenres(genres.__type.enumValues.map((item) => { return { id: item.name, name: item.name } }));
+            this.setGenres(genres.__type.enumValues.map(({ name }) => {
+                return {
+                    id: name,
+                    name
+                }
+            }));
         }).catch((error) => {
             console.log('Error', error);
         });
@@ -186,36 +190,40 @@ class OovvuuNavigaPluginComponent extends Component {
      */
     getAuthComponents($$) {
         const components = [];
-        const userAuth = $$('div').addClass(styles.userAuth);
+        const userAuth = $$('div')
+            .addClass(styles.userAuth);
 
         // Not authenticated.
         if ( false === this.state.authenticated ) {
-            const LoginButton = $$(UIButton, {
-                label: this.getLabel('Login'),
-                type: 'default',
-                onClick: async() => this.handleSetAuthState(authService.login(), true),
-            });
+            const LoginButton = $$('button')
+                .addClass(styles.login)
+                .on('click', async () => this.handleSetAuthState(
+                    authService.login(), true)
+                )
+                .setInnerHTML('Login')
 
             // Authentication error
             if ( null !== this.state.authenticationError ) {
-                components.push($$('p').text(this.state.authenticationError));
-                components.push($$('p').text('Please contact site admin for support.'));
+                components.push($$('p')
+                    .text(this.state.authenticationError));
+                components.push($$('p')
+                    .text('Please contact site admin for support.'));
             }
 
             return userAuth.append([LoginButton, ...components]);
-        } else if ( true === this.state.authenticated ) {
+        }
+
+        if ( true === this.state.authenticated ) {
             // Add user info if available.
             if ( this.state.user ) {
-                components.push($$('p').append($$('em').text(`Currently logged in as ${this.state.user.email}`)));
+                components.push($$('p').append($$('em')
+                    .text(`Logged in as ${this.state.user.email}`)));
             }
 
-            const LogoutButton = $$(UIButton, {
-                label: this.getLabel('Logout'),
-                type: 'alert outlined',
-                onClick: async () => {
-                    authService.logout();
-                },
-            });
+            const LogoutButton = $$('button')
+                .addClass(styles.logout)
+                .on('click', async () => { authService.logout(); })
+                .setInnerHTML('Logout')
 
             return userAuth.append([...components, LogoutButton]);
         }
@@ -227,29 +235,37 @@ class OovvuuNavigaPluginComponent extends Component {
      * Render method is called whenever there's a change in state or props
      *
      * @param $$
-     * @returns {*}
+     * @return Components.
      */
     render($$) {
-        const container = $$('div');
-        const title = $$('h2').append(
-            this.getLabel('Oovvuu Plugin')
+        const header = $$('div')
+            .addClass(styles.header)
+            .append([
+                $$('div')
+                    .addClass(styles.logoWrapper)
+                    .append([
+                        $$('a').addClass(styles.logo),
+                        $$('h3')
+                            .addClass(styles.heading)
+                            .append(this.getLabel('Oovvuu Video Search')),
+                    ]),
+                this.getAuthComponents($$)
+            ]);
+
+        const container = $$('div')
+            .addClass(styles.wrapper)
+            .append(header);
+
+        if ( true !== this.state.authenticated ) {
+            return container;
+        }
+
+        return container.append(
+            $$(SearchWrapper, {
+                genres: this.state.genres,
+                providers: this.state.providers
+            })
         );
-
-        // Add the title.
-        container.append(title);
-
-        // Add components.
-        const components = this.getAuthComponents($$);
-
-        if (components) {
-            container.append(components);
-        }
-
-        if ( true === this.state.authenticated ) {
-            container.append($$(SearchWrapper, { genres: this.state.genres, providers: this.state.providers }));
-        }
-
-        return container
     }
 }
 

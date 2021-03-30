@@ -186,7 +186,7 @@ class SearchResultsListItem extends Component {
                 icon = 'fa-plus-circle';
         }
 
-        // Get the icon based on the loading state.
+        // Set the embeded class for the active status.
         let embedStatus = (Number(id) === Number(this.state.embeded))
             ? styles.embeded
             : '';

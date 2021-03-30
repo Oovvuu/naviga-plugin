@@ -1,13 +1,53 @@
+.header {
+    align-items: center;
+    display: grid;
+    grid-gap: rem(20);
+    grid-template-columns: 70% 1fr;
+    margin-bottom: rem(20);
+}
+
+.heading {
+    @include font-props(20, 18, bold);
+    color: var(--oovvuu-color-gray-dark);
+}
+
+.logoWrapper {
+    align-items: center;
+    display: flex;
+}
+
+.logo {
+    background-image: url("data:image/svg+xml,%3Csvg height='30' viewBox='0 0 24 24' width='30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23fff' d='m12 0v6.003906h-6v11.992188h12v5.992187h-12v.011719h-.375c-3.105469 0-5.625-2.519531-5.625-5.628906v-.375h.0117188v-11.992188h-.0117188v-.375c0-3.109375 2.519531-5.628906 5.625-5.628906zm6 17.996094v-6.007813h6v6.382813c0 3.109375-2.519531 5.628906-5.625 5.628906h-.375zm6-17.996094v9.757812h-7.28125l-5.988281 3.457032 3.519531-6.113282v-7.101562zm0 0'/%3E%3C/svg%3E%0A");
+    background-repeat: no-repeat;
+    background-color: var(--oovvuu-color-theme);
+    border: 10px solid var(--oovvuu-color-theme);
+    composes: rounded from './scss/shared/theme.scss';
+    height: rem(50);
+    margin-right: rem(10);
+    width: rem(50);
+}
+
 .userAuth {
-    margin: rem(20) 0;
+    text-align: right;
 
     p {
         @include font-props(14, 18);
-        margin-bottom: rem(5);
+        color: var(--oovvuu-color-gray);
     }
+}
 
-    // UIButton.
-    :global(.dw-btn) + p {
-        margin-top: rem(5);
-    }
+.login {
+    @include font-props(16, 18, medium);
+    background-color: var(--oovvuu-color-theme);
+    color: var(--oovvuu-color-white);
+    composes: panel-shadow from './scss/shared/theme.scss';
+    composes: rounded from './scss/shared/theme.scss';
+    display: inline-block;
+    padding: rem(7) rem(17);
+}
+
+.logout {
+    @include font-props(12, 18);
+    color: var(--oovvuu-color-gray);
+    display: inline-block;
 }
