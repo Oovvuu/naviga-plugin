@@ -17,6 +17,8 @@ class SearchWrapper extends Component {
 
         // Bind class methods.
         this.handleInputSubmit = this.handleInputSubmit.bind(this);
+        this.removeVideo = this.removeVideo.bind(this);
+        this.addVideo = this.addVideo.bind(this);
     }
 
     /**
@@ -27,6 +29,7 @@ class SearchWrapper extends Component {
     getInitialState() {
         return {
             videos: [],
+            addedVideos: [],
             videosTotalCount: 0,
             videosError: {},
             loadingVideos: false,
@@ -87,6 +90,29 @@ class SearchWrapper extends Component {
         this.extendState({
             filters: filters,
         })
+    }
+
+    /**
+     * Adding selected video.
+     *
+     * @param {object} addedVideos Selected videos.
+     */
+    addVideo( id ) {
+        this.extendState({
+            addedVideos: [ ...this.state.addedVideos, Number(id) ]
+        })
+    }
+
+    /**
+     * Remove selected video.
+     *
+     * @param {object} filters Seleted videos.
+     */
+    removeVideo( id ) {
+        this.extendState({
+            addedVideos: this.state.addedVideos
+                .filter((itemID) => itemID !== Number(id))
+        });
     }
 
     /**
@@ -197,7 +223,10 @@ class SearchWrapper extends Component {
                 const item = $$('li');
 
                 item.append($$(SearchResultsItem, {
+                    addVideo: this.addVideo,
+                    removeVideo: this.removeVideo,
                     video: this.state.videos[index],
+                    addedVideos: this.state.addedVideos,
                 }));
 
                 list.append(item);

@@ -25,8 +25,7 @@ class SearchResultsListItem extends Component {
      */
     getInitialState() {
         return {
-            loadingCreateEmbed: false,
-            embeded: 0,
+            loadingCreateEmbed: false
         };
     }
 
@@ -36,15 +35,6 @@ class SearchResultsListItem extends Component {
     clearLoadingCreateEmbed() {
         this.extendState({
             loadingCreateEmbed: null,
-        });
-    }
-
-    /**
-     * Save embeded ID.
-     */
-    embedItem( id ) {
-        this.extendState({
-            embeded: id,
         });
     }
 
@@ -85,11 +75,32 @@ class SearchResultsListItem extends Component {
                     }
                 );
                 this.setLoadingCreateEmbed(false);
-                this.embedItem(this.props.video.id);
             }).catch((error) => {
                 console.error(error);
                 this.setLoadingCreateEmbed(false);
             });
+
+        // Add video as selected.
+        this.props.addVideo(this.props.video.id)
+    }
+
+    /**
+     * Handle removing the Oovvuu embed.
+     */
+    handleRemoveEmbed() {
+        this.clearLoadingCreateEmbed();
+
+        // Create the embed based on the video ID.
+        if (undefined === this.props.video || !this.props.video.id) {
+            return;
+        }
+
+        this.setLoadingCreateEmbed(true);
+
+        // Deselect video.
+        this.props.removeVideo(this.props.video.id);
+
+        this.setLoadingCreateEmbed(false);
     }
 
     /**
@@ -163,7 +174,11 @@ class SearchResultsListItem extends Component {
                 .addClass(styles.title)
         );
 
-        // Buttion icon and text.
+        const selectedVideo = (this.props.addedVideos.includes(Number(id)));
+
+        console.log(this.state.loadingCreateEmbed);
+
+        // Button icon and text.
         let icon;
         let iconText;
 
@@ -174,29 +189,31 @@ class SearchResultsListItem extends Component {
                 iconText = 'Adding'
                 break;
 
-            // Get the icon based on the enbeded video.
-            case (Number(id) === Number(this.state.embeded)):
+            // Get the icon based on the selected video.
+            case (true === selectedVideo):
                 icon = 'fa-check';
                 iconText = 'Added'
                 break;
 
             // Default.
             default:
-                iconText = 'Add Embed'
                 icon = 'fa-plus-circle';
+                iconText = 'Add Embed'
         }
 
-        // Set the embeded class for the active status.
-        let embedStatus = (Number(id) === Number(this.state.embeded))
+        const selectedVideoClass = true === selectedVideo
             ? styles.embeded
             : '';
 
-        // Add embed.
+        const buttonAction = true === selectedVideo
+            ? this.handleRemoveEmbed
+            : this.handleAddEmbed;
+
         card.append(
             $$('button')
                 .addClass(styles.embed)
-                .addClass(embedStatus)
-                .on('click', this.handleAddEmbed)
+                .addClass(selectedVideoClass)
+                .on('click', buttonAction)
                 .setInnerHTML(`<i class="fa ${icon}"></i> ${iconText}`)
         );
 
