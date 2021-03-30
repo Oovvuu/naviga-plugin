@@ -31,6 +31,15 @@ class SearchForm extends Component {
             Input.attr('value', this.props.filters.keywordMatch);
         }
 
+        // Disable input until filters are loaded.
+        if (
+            0 === this.props.genres.length
+            || 0 === this.props.providers.length
+        ) {
+            Input.attr('disabled', true);
+            Input.attr('placeholder', 'Loading filters...');
+        }
+
         const SubmitButton = $$('button')
             .attr('aria-label', this.getLabel('Submit'))
             .attr('type', 'submit')
