@@ -205,7 +205,7 @@ class SearchWrapper extends Component {
 
             const heading = $$('h2')
                 .addClass(styles.heading)
-                .text(`Showing ${this.state.videos.length} of ${this.state.videosTotalCount}`);
+                .text(`Showing ${this.state.videos.length} of ${Number(this.state.videosTotalCount).toLocaleString()}`);
 
             container.append([
                 heading,
