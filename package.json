@@ -5,7 +5,9 @@
     "main": "src/index.js",
     "scripts": {
         "start": "webpack-dev-server --config webpack/webpack.dev.js --hot --progress --watch",
-        "build": "webpack --config webpack/webpack.prod.js --progress"
+        "build": "webpack --config webpack/webpack.prod.js --progress",
+        "test": "jest --passWithNoTests --config=config/jest.js",
+        "test:watch": "jest --watch --passWithNoTests --config=config/jest.js"
     },
     "devDependencies": {
         "@babel/cli": "^7.13.14",
@@ -21,6 +23,7 @@
         "eslint": "^6.0.1",
         "eslint-loader": "^2.1.2",
         "express": "^4.17.1",
+        "jest": "^26.6.3",
         "mini-css-extract-plugin": "^0.7.0",
         "node-sass": "^4.13.1",
         "optimize-css-assets-webpack-plugin": "^5.0.1",
