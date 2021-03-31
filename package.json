@@ -5,7 +5,8 @@
     "main": "src/index.js",
     "scripts": {
         "start": "webpack-dev-server --config webpack/webpack.dev.js --hot --progress --watch",
-        "build": "webpack --config webpack/webpack.prod.js --progress"
+        "build": "webpack --config webpack/webpack.prod.js --progress",
+        "lint": "eslint ."
     },
     "devDependencies": {
         "@babel/cli": "^7.13.14",

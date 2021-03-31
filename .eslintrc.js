@@ -19,6 +19,7 @@ module.exports = {
         'writer': true,
         'substance': true
     },
+    "ignorePatterns": ["dist/*.js"],
     "rules": {
         // 0 - off, 1 - warning, 2 - error
         "indent": [2, 4, {"SwitchCase": 1}],
