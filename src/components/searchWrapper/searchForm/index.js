@@ -17,8 +17,17 @@ class SearchForm extends Component {
       .addClass(styles.input)
       .setId('oovvuu-video-search-button');
 
-    if (undefined !== this.props.filters.keywordMatch) {
-      Input.attr('value', this.props.filters.keywordMatch);
+    if (undefined !== this.props.filters?.keywordMatch) {
+      Input.attr('value', this.props.filters?.keywordMatch);
+    }
+
+    // Disable input until filters are loaded.
+    if (
+      this.props.genres.length === 0
+      || this.props.providers.length === 0
+    ) {
+      Input.attr('disabled', true);
+      Input.attr('placeholder', 'Loading filters...');
     }
 
     const SubmitButton = $$('button')

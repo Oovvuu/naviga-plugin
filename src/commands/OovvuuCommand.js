@@ -1,7 +1,9 @@
 import { WriterCommand, idGenerator } from 'writer';
 
 class OovvuuCommand extends WriterCommand {
-  static execute(params) {
+  /* eslint-disable class-methods-use-this */
+  // Must not be defined as a static method to work with Substance.
+  execute(params) {
     params.editorSession.transaction((tx) => {
       tx.insertBlockNode({
         id: idGenerator(),
