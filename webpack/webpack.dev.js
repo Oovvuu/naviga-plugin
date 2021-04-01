@@ -5,21 +5,6 @@ const common = require('./webpack.common.js');
 
 const port = process.env.PORT || 3000;
 
-class Notifier {
-  static apply(compiler) {
-    compiler.plugin('done', (statsObj) => {
-      const stats = statsObj.toJson();
-      setTimeout(() => {
-        const { assets } = stats;
-        console.log('Plugin assets served at: ');
-        assets.forEach(({ name }) => {
-          console.log(`http://localhost:${port}/${name}`);
-        });
-      }, 0);
-    });
-  }
-}
-
 module.exports = merge(common,
   {
     mode: 'development',
@@ -41,7 +26,4 @@ module.exports = merge(common,
       namedModules: true,
       namedChunks: true,
     },
-    plugins: [
-      new Notifier(),
-    ],
   });
