@@ -1,4 +1,4 @@
-import request from './graphql.js'
+import request from './graphql';
 
 /**
  * Gets the latest videos.
@@ -7,7 +7,7 @@ import request from './graphql.js'
  * @return {Promise} The API request.
  */
 const getLatestVideos = (filters) => {
-    const query = `
+  const query = `
     query ($input: VideoSetInput!, $playbackInput: PlaybackInput! ) {
       videoSet (input: $input) {
         totalCount
@@ -50,28 +50,28 @@ const getLatestVideos = (filters) => {
       activatedAt
       providerAssetId
     }
-    `
+    `;
 
-    const variables = {
-        "input": {
-            "limit": 25,
-            "sort": {
-                "sort": "id",
-                "ascending": false
-            },
-            "filter": {
-                ...filters,
-                "status": [
-                    "Active"
-                ]
-            }
-        },
-        "playbackInput": {
-            "domain": window.location.origin
-        }
-    }
+  const variables = {
+    input: {
+      limit: 25,
+      sort: {
+        sort: 'id',
+        ascending: false,
+      },
+      filter: {
+        ...filters,
+        status: [
+          'Active',
+        ],
+      },
+    },
+    playbackInput: {
+      domain: window.location.origin,
+    },
+  };
 
-    return request(query, variables);
-}
+  return request(query, variables);
+};
 
 export default getLatestVideos;

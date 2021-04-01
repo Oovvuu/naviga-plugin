@@ -1,4 +1,4 @@
-import request from './graphql.js'
+import request from './graphql';
 
 /**
  * Gets all available genres.
@@ -6,7 +6,7 @@ import request from './graphql.js'
  * @return {Promise} The API request.
  */
 const getGenres = () => {
-    const query = `
+  const query = `
     query GetGenres {
       __type(name: "Genre") {
         name
@@ -19,7 +19,7 @@ const getGenres = () => {
     }
     `;
 
-    return request(query, {});
-}
+  return request(query, {});
+};
 
 export default getGenres;

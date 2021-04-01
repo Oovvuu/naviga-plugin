@@ -1,207 +1,196 @@
 import { Component } from 'substance';
 import BrightcovePlayer from '../../brightcovePlayer';
 import Badge from '../../badge';
-import createEmbed from '../../../api/createEmbed.js';
+import createEmbed from '../../../api/createEmbed';
 import formatDuration from '../../../utils/formatDuration';
 import formatTimeSince from '../../../utils/formatTimeSince';
 import * as styles from './searchResultsItem.scss';
 
 class SearchResultsListItem extends Component {
+  /**
+   * Return the inital component state before rendering
+   *
+   * @returns {object} Component state.
+   */
+  static getInitialState() {
+    return {
+      loadingCreateEmbed: false,
+      embeded: 0,
+    };
+  }
 
-    /**
-     * Create a SearchResultsListItem.
-     * @constructor
-     *
-     * @param {array} args Component arguments.
-     */
-    constructor(...args) {
-        super(...args);
+  /**
+   * Clears loading create embed.
+   */
+  clearLoadingCreateEmbed() {
+    this.extendState({
+      loadingCreateEmbed: null,
+    });
+  }
+
+  /**
+   * Save embeded ID.
+   */
+  embedItem(id) {
+    this.extendState({
+      embeded: id,
+    });
+  }
+
+  /**
+   * Sets loading create embed.
+   *
+   * @param {Boolean} loading True or false.
+   */
+  setLoadingCreateEmbed(loading) {
+    this.extendState({
+      loadingCreateEmbed: Boolean(loading),
+    });
+  }
+
+  /**
+   * Handle creating the Oovvuu embed and add it to the document.
+   */
+  handleAddEmbed() {
+    this.clearLoadingCreateEmbed();
+
+    // Create the embed based on the video ID.
+    if (undefined === this.props.video || !this.props.video.id) {
+      return;
     }
 
-    /**
-     * Return the inital component state before rendering
-     *
-     * @returns {object} Component state.
-     */
-    getInitialState() {
-        return {
-            loadingCreateEmbed: false,
-            embeded: 0,
-        };
-    }
+    this.setLoadingCreateEmbed(true);
 
-    /**
-     * Clears loading create embed.
-     */
-    clearLoadingCreateEmbed() {
-        this.extendState({
-            loadingCreateEmbed: null,
-        });
-    }
-
-    /**
-     * Save embeded ID.
-     */
-    embedItem( id ) {
-        this.extendState({
-            embeded: id,
-        });
-    }
-
-    /**
-     * Sets loading create embed.
-     *
-     * @param {Boolean} loading True or false.
-     */
-    setLoadingCreateEmbed(loading) {
-        this.extendState({
-            loadingCreateEmbed: Boolean(loading),
-        });
-    }
-
-    /**
-     * Handle creating the Oovvuu embed and add it to the document.
-     */
-    handleAddEmbed() {
-        this.clearLoadingCreateEmbed();
-
-        // Create the embed based on the video ID.
-        if (undefined === this.props.video || !this.props.video.id) {
-            return;
-        }
-
-        this.setLoadingCreateEmbed(true);
-
-        createEmbed(this.props.video.id)
-            .then((embed) => {
-                this.context.api.editorSession.executeCommand(
-                    'oovvuu.insert',
-                    {
-                        brightcoveAccountId: this.props.video.preview.brightcoveAccountId,
-                        brightcovePlayerId: this.props.video.preview.brightcovePlayerId,
-                        brightcoveVideoId: this.props.video.preview.brightcoveVideoId,
-                        embedId: embed.createVideoEmbed.id,
-                        embed: embed.createVideoEmbed,
-                    }
-                );
-                this.setLoadingCreateEmbed(false);
-                this.embedItem(this.props.video.id);
-            }).catch((error) => {
-                console.error(error);
-                this.setLoadingCreateEmbed(false);
-            });
-    }
-
-    /**
-     * Render the SearchResultsListItem.
-     *
-     * @param  {function} $$ The createComponent function.
-     * @return {VirtualComponent} The SearchResultsListItem component.
-     */
-    render($$) {
-        const {
-            video: {
-                id,
-                title,
-                duration,
-                modified,
-                collection: {
-                    provider: {
-                        logo: {
-                            url: logoUrl,
-                        } = {},
-                        name = '',
-                    } = {},
-                } = {},
-                preview: {
-                    brightcoveAccountId: accountId,
-                    brightcovePlayerId: playerId,
-                    brightcoveVideoId: videoId,
-                } = {},
-            }
-        } = this.props;
-
-        // Add the player.
-        const container = $$('article')
-            .setId(id)
-            .addClass(styles.wrapper)
-            .append($$(BrightcovePlayer, {
-                location: 'searchResults',
-                accountId,
-                playerId,
-                videoId,
-                embedOptions: { responsive: true },
-                options: { // Video.js options.
-                    fluid: true,
-                    aspectRatio: '16:9',
-                    width: 250,
-                },
-            }));
-
-        const card = $$('div').addClass(styles.card);
-
-        // Meta.
-        card.append(
-            $$('div')
-                .addClass(styles.meta)
-                .append($$(Badge, { text: formatDuration(duration) }))
-                .append($$(Badge, { text: formatTimeSince(modified) }))
+    createEmbed(this.props.video.id)
+      .then((embed) => {
+        this.context.api.editorSession.executeCommand(
+          'oovvuu.insert',
+          {
+            brightcoveAccountId: this.props.video.preview.brightcoveAccountId,
+            brightcovePlayerId: this.props.video.preview.brightcovePlayerId,
+            brightcoveVideoId: this.props.video.preview.brightcoveVideoId,
+            embedId: embed.createVideoEmbed.id,
+            embed: embed.createVideoEmbed,
+          },
         );
+        this.setLoadingCreateEmbed(false);
+        this.embedItem(this.props.video.id);
+      }).catch((error) => {
+        console.error(error);
+        this.setLoadingCreateEmbed(false);
+      });
+  }
 
-        // Logo.
-        card.append(
-            $$('img')
-                .addClass(styles.logo)
-                .attr('alt', name)
-                .attr('src', logoUrl)
-        );
+  /**
+   * Render the SearchResultsListItem.
+   *
+   * @param  {function} $$ The createComponent function.
+   * @return {VirtualComponent} The SearchResultsListItem component.
+   */
+  render($$) {
+    const {
+      video: {
+        id,
+        title,
+        duration,
+        modified,
+        collection: {
+          provider: {
+            logo: {
+              url: logoUrl,
+            } = {},
+            name = '',
+          } = {},
+        } = {},
+        preview: {
+          brightcoveAccountId: accountId,
+          brightcovePlayerId: playerId,
+          brightcoveVideoId: videoId,
+        } = {},
+      },
+    } = this.props;
 
-        // Title.
-        card.append(
-            $$('h2')
-                .setTextContent(title)
-                .addClass(styles.title)
-        );
+    // Add the player.
+    const container = $$('article')
+      .setId(id)
+      .addClass(styles.wrapper)
+      .append($$(BrightcovePlayer, {
+        location: 'searchResults',
+        accountId,
+        playerId,
+        videoId,
+        embedOptions: { responsive: true },
+        options: { // Video.js options.
+          fluid: true,
+          aspectRatio: '16:9',
+          width: 250,
+        },
+      }));
 
-        // Buttion icon and text.
-        let icon;
-        let iconText;
+    const card = $$('div').addClass(styles.card);
 
-        switch(true) {
-            // Get the icon based on the loading state.
-            case (true === this.state.loadingCreateEmbed):
-                icon = 'fa-spinner fa-spin'
-                iconText = 'Adding'
-                break;
+    // Meta.
+    card.append(
+      $$('div')
+        .addClass(styles.meta)
+        .append($$(Badge, { text: formatDuration(duration) }))
+        .append($$(Badge, { text: formatTimeSince(modified) })),
+    );
 
-            // Get the icon based on the enbeded video.
-            case (Number(id) === Number(this.state.embeded)):
-                icon = 'fa-check';
-                iconText = 'Added'
-                break;
+    // Logo.
+    card.append(
+      $$('img')
+        .addClass(styles.logo)
+        .attr('alt', name)
+        .attr('src', logoUrl),
+    );
 
-            // Default.
-            default:
-                iconText = 'Add Embed'
-                icon = 'fa-plus-circle';
-        }
+    // Title.
+    card.append(
+      $$('h2')
+        .setTextContent(title)
+        .addClass(styles.title),
+    );
 
-        // Set the embeded class for the active status.
-        let embedStatus = (Number(id) === Number(this.state.embeded))
-            ? styles.embeded
-            : '';
+    // Buttion icon and text.
+    let icon;
+    let iconText;
 
-        // Add embed.
-        card.append(
-            $$('button')
-                .addClass(styles.embed)
-                .addClass(embedStatus)
-                .on('click', this.handleAddEmbed)
-                .setInnerHTML(`<i class="fa ${icon}"></i> ${iconText}`)
-        );
+    switch (true) {
+      // Get the icon based on the loading state.
+      case (this.state.loadingCreateEmbed === true):
+        icon = 'fa-spinner fa-spin';
+        iconText = 'Adding';
+        break;
 
-        return container.append(card);
+      // Get the icon based on the enbeded video.
+      case (Number(id) === Number(this.state.embeded)):
+        icon = 'fa-check';
+        iconText = 'Added';
+        break;
+
+      // Default.
+      default:
+        iconText = 'Add Embed';
+        icon = 'fa-plus-circle';
     }
+
+    // Set the embeded class for the active status.
+    const embedStatus = (Number(id) === Number(this.state.embeded))
+      ? styles.embeded
+      : '';
+
+    // Add embed.
+    card.append(
+      $$('button')
+        .addClass(styles.embed)
+        .addClass(embedStatus)
+        .on('click', this.handleAddEmbed)
+        .setInnerHTML(`<i class="fa ${icon}"></i> ${iconText}`),
+    );
+
+    return container.append(card);
+  }
 }
 
 export default SearchResultsListItem;

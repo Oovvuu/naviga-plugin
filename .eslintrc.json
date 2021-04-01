@@ -1,0 +1,35 @@
+{
+  "extends": "airbnb-base",
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "globalReturn": true,
+      "impliedStrict": true,
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "globals": {
+    "Promise": true,
+    "Map": true,
+    "expect": true,
+    "it": true,
+    "describe": true,
+    "beforeEach": true,
+    "writer": true,
+    "substance": true
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    },
+    "import/core-modules": [ "substance", "writer" ]
+  },
+  "rules": {}
+}
