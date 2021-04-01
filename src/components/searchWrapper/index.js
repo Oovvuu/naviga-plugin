@@ -142,13 +142,15 @@ class SearchWrapper extends Component {
     };
 
     const filters = {};
-    for (const [key, value] of Object.entries(filterEls)) {
+    Object.keys(filterEls).forEach((key) => {
+      const value = filterEls[key];
+      // do something with key or value
       const el = document.getElementById(value);
 
       if (el !== null && el.value !== '') {
         filters[key] = el.value;
       }
-    }
+    });
 
     // Handle the search with filters.
     if (filters) {

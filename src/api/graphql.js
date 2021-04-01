@@ -17,7 +17,7 @@ const request = async (query, variables) => {
   // Check that access token is valid.
   if (!token) {
     return new Promise((resolve, reject) => {
-      reject('Unable to get access token');
+      reject(new Error('Unable to get access token'));
     });
   }
 
