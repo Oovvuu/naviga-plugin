@@ -28,7 +28,9 @@ class OovvuuNavigaPluginComponent extends Component {
     this.handleSetAuthState(authService.isAuthenticated());
 
     // Load filters data.
-    this.handleLoadFiltersData();
+    if (this.state.authenticated === true) {
+      this.handleLoadFiltersData();
+    }
   }
 
   /**
@@ -182,6 +184,8 @@ class OovvuuNavigaPluginComponent extends Component {
     const components = [];
     const userAuth = $$('div')
       .addClass(styles.userAuth);
+
+    console.log(this.state.authenticated);
 
     // Not authenticated.
     if (this.state.authenticated === false) {

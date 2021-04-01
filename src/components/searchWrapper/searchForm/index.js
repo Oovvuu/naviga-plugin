@@ -23,8 +23,8 @@ class SearchForm extends Component {
 
     // Disable input until filters are loaded.
     if (
-      this.props.genres.length === 0
-      || this.props.providers.length === 0
+      this.props?.genres?.length === 0
+      || this.props?.providers?.length === 0
     ) {
       Input.attr('disabled', true);
       Input.attr('placeholder', 'Loading filters...');

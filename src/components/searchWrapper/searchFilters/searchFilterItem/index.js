@@ -19,7 +19,7 @@ class SearchFilterItem extends Component {
 
     // Check if we have an empty set of data. If so indicate that we are
     // loading results.
-    if (data.length === 0) {
+    if (data?.length === 0) {
       const placeholder = $$('option').text(`Loading ${label}`);
       placeholder.attr('value', '');
       placeholder.attr('disabled', true);
@@ -37,7 +37,7 @@ class SearchFilterItem extends Component {
 
     Select.append(placeholder);
 
-    for (let index = 0; index < data.length; index += 1) {
+    for (let index = 0; index < data?.length; index += 1) {
       const option = $$('option').attr('value', data[index].id);
       option.text(data[index].name);
 
