@@ -1,4 +1,4 @@
-import request from './graphql.js'
+import request from './graphql';
 
 /**
  * Create an embed based on a single Video ID.
@@ -7,7 +7,7 @@ import request from './graphql.js'
  * @return {Promise} The API request.
  */
 const createEmbed = (videoId) => {
-    const query = `
+  const query = `
     mutation CreateEmbed($input: CreateVideoEmbedInput!) {
       createVideoEmbed(input: $input) {
         id
@@ -18,15 +18,15 @@ const createEmbed = (videoId) => {
     }
     `;
 
-    const variables = {
-        "input": {
-            "videoIds": [
-                videoId
-            ]
-        }
-    };
+  const variables = {
+    input: {
+      videoIds: [
+        videoId,
+      ],
+    },
+  };
 
-    return request(query, variables);
-}
+  return request(query, variables);
+};
 
 export default createEmbed;

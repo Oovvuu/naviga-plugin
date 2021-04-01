@@ -1,20 +1,14 @@
-import authClient from './authClient.js'
+import authClient from './authClient';
 
 const authService = {
-    login: () => {
-        return authClient.loginWithPopup()
-    },
-    logout: async () => {
-        authClient.logout({
-            returnTo: window.location.origin
-        })
-    },
-    isAuthenticated: () => {
-        return authClient.getTokenSilently()
-    },
-    getUser: () => {
-        return authClient.getUser();
-    }
-}
+  login: () => authClient.loginWithPopup(),
+  logout: async () => {
+    authClient.logout({
+      returnTo: window.location.origin,
+    });
+  },
+  isAuthenticated: () => authClient.getTokenSilently(),
+  getUser: () => authClient.getUser(),
+};
 
 export default authService;
