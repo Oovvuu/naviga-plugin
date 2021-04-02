@@ -69,7 +69,7 @@ class SearchForm extends Component {
    */
   render($$) {
     const Input = $$(ChipInput, {
-      loadingFilters: this.props?.genres?.length === 0 || this.props?.providers?.length === 0,
+      loadingFilters: this.props.genres.length === 0 || this.props.providers.length === 0,
       addKeyword: this.addKeyword,
       removeKeyword: this.removeKeyword,
     });

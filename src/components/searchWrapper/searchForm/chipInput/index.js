@@ -65,7 +65,7 @@ class ChipInput extends Component {
       .setId('oovvuu-video-search-button');
 
     // Disable input until filters are loaded.
-    if (this.props?.loadingFilters) {
+    if (this.props.loadingFilters) {
       Input.attr('disabled', true);
       Input.attr('placeholder', 'Loading filters...');
     }
