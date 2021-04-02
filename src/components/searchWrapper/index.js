@@ -23,7 +23,8 @@ class SearchWrapper extends Component {
    *
    * @returns {object} Component state.
    */
-  static getInitialState() {
+  /* eslint-disable-next-line class-methods-use-this */
+  getInitialState() {
     return {
       videos: [],
       videosTotalCount: 0,
@@ -151,6 +152,9 @@ class SearchWrapper extends Component {
         filters[key] = el.value;
       }
     });
+
+    // Update the keywordMatch filter to be an array.
+    filters.keywordMatch = filters.keywordMatch.split(' ');
 
     // Handle the search with filters.
     if (filters) {

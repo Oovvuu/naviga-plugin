@@ -1,8 +1,68 @@
 import { Component } from 'substance';
 import SearchFilters from '../searchFilters';
+import ChipInput from './chipInput';
+import ChipItem from './chipItem';
 import * as styles from './searchForm.scss';
 
 class SearchForm extends Component {
+  /**
+   * Constructor
+   * @param args
+   */
+  constructor(...args) {
+    super(...args);
+
+    // Bind class methods.
+    this.addKeyword = this.addKeyword.bind(this);
+    this.removeKeyword = this.removeKeyword.bind(this);
+  }
+
+  /**
+   * Return the inital component state before rendering
+   *
+   * @returns {object} Component state.
+   */
+  /* eslint-disable-next-line class-methods-use-this */
+  getInitialState() {
+    return {
+      keywords: [
+        'test',
+      ],
+    };
+  }
+
+  /**
+   * Add keyword.
+   *
+   * @param {string} keyword A keyword
+   */
+  addKeyword(keyword) {
+    // Keyword already exists in array.
+    if (this.state.keywords.includes(keyword)) {
+      return;
+    }
+
+    this.extendState({
+      keywords: [
+        ...this.state.keywords,
+        keyword,
+      ],
+    });
+  }
+
+  /**
+   * Remove keyword.
+   *
+   * @param {string} keyword A keyword
+   */
+  removeKeyword(keyword) {
+    this.extendState({
+      keywords: [
+        ...this.state.keywords.filter((item) => keyword !== item),
+      ],
+    });
+  }
+
   /**
    * Render the SearchForm.
    *
@@ -10,25 +70,11 @@ class SearchForm extends Component {
    * @return {VirtualComponent} The SearchForm component.
    */
   render($$) {
-    const Input = $$('input')
-      .attr('aria-label', this.getLabel('Search'))
-      .attr('placeholder', 'Search Video Library')
-      .addClass('dw-form-control')
-      .addClass(styles.input)
-      .setId('oovvuu-video-search-button');
-
-    if (undefined !== this.props.filters?.keywordMatch) {
-      Input.attr('value', this.props.filters?.keywordMatch);
-    }
-
-    // Disable input until filters are loaded.
-    if (
-      this.props?.genres?.length === 0
-      || this.props?.providers?.length === 0
-    ) {
-      Input.attr('disabled', true);
-      Input.attr('placeholder', 'Loading filters...');
-    }
+    const Input = $$(ChipInput, {
+      loadingFilters: this.props?.genres?.length === 0 || this.props?.providers?.length === 0,
+      addKeyword: this.addKeyword,
+      removeKeyword: this.removeKeyword,
+    });
 
     const SubmitButton = $$('button')
       .attr('aria-label', this.getLabel('Submit'))
@@ -37,8 +83,16 @@ class SearchForm extends Component {
       .append($$('i').addClass('fa fa-search'));
 
     const InputWrapper = $$('div')
-      .addClass(styles.wrapper)
-      .append([Input, SubmitButton]);
+      .addClass(styles.wrapper);
+
+    if (this.state.keywords.length !== 0) {
+      this.state.keywords.map((keyword) => {
+        InputWrapper.append($$(ChipItem, { removeKeyword: this.removeKeyword, keyword }));
+        return keyword;
+      });
+    }
+
+    InputWrapper.append([Input, SubmitButton]);
 
     const Filters = $$(SearchFilters, {
       genres: this.props.genres,

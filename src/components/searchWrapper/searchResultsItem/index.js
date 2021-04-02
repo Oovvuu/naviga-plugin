@@ -12,7 +12,8 @@ class SearchResultsListItem extends Component {
    *
    * @returns {object} Component state.
    */
-  static getInitialState() {
+  /* eslint-disable-next-line class-methods-use-this */
+  getInitialState() {
     return {
       loadingCreateEmbed: false,
       embeded: 0,

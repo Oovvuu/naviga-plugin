@@ -7,10 +7,11 @@ import * as styles from './OovvuuNavigaPluginComponent.scss';
 
 class OovvuuNavigaPluginComponent extends Component {
   /**
-     * Return the inital component state before rendering
-     *
-     * @returns {object} Component state.
-     */
+   * Return the inital component state before rendering
+   *
+   * @returns {object} Component state.
+   */
+  /* eslint-disable-next-line class-methods-use-this */
   static getInitialState() {
     return {
       authenticated: null,
@@ -21,8 +22,8 @@ class OovvuuNavigaPluginComponent extends Component {
   }
 
   /**
-     * Do something after the first render
-     */
+   * Do something after the first render
+   */
   didMount() {
     // Check if the user is authenticated.
     this.handleSetAuthState(authService.isAuthenticated());
@@ -34,12 +35,12 @@ class OovvuuNavigaPluginComponent extends Component {
   }
 
   /**
-     * Loads the filter data from the API into component state.
-     */
+   * Loads the filter data from the API into component state.
+   */
   handleLoadFiltersData() {
     /**
-         * Genres.
-         */
+     * Genres.
+     */
     getGenres().then((genres) => {
       // eslint-disable-next-line no-underscore-dangle
       this.setGenres(genres.__type.enumValues.map(({ name }) => ({
@@ -51,8 +52,8 @@ class OovvuuNavigaPluginComponent extends Component {
     });
 
     /**
-         * Providers.
-         */
+     * Providers.
+     */
     getProviders().then((providers) => {
       this.setProviders(providers.organisationSet.pageResults);
     }).catch((error) => {
@@ -61,11 +62,11 @@ class OovvuuNavigaPluginComponent extends Component {
   }
 
   /**
-     * Handles the set auth state based on the resolution of a Promise.
-     *
-     * @param {Promise} promise Auth promise.
-     * @param {Boolean} showError Whether or not to show auth errors.
-     */
+   * Handles the set auth state based on the resolution of a Promise.
+   *
+   * @param {Promise} promise Auth promise.
+   * @param {Boolean} showError Whether or not to show auth errors.
+   */
   handleSetAuthState(promise, showError = false) {
     // Clear the auth state.
     this.clearAuthState();
@@ -79,6 +80,7 @@ class OovvuuNavigaPluginComponent extends Component {
         this.handleLoadFiltersData();
       })
       .catch((error) => {
+        console.error(error);
         if (showError) {
           this.setAuthErrorState(error);
         }
@@ -88,10 +90,10 @@ class OovvuuNavigaPluginComponent extends Component {
   }
 
   /**
-     * Sets the user object.
-     *
-     * @param {Promise} promise Get user promise.
-     */
+   * Sets the user object.
+   *
+   * @param {Promise} promise Get user promise.
+   */
   setUser(userPromise) {
     this.clearUser();
 
@@ -104,8 +106,8 @@ class OovvuuNavigaPluginComponent extends Component {
   }
 
   /**
-     * Clears the user.
-     */
+   * Clears the user.
+   */
   clearUser() {
     this.extendState({
       user: null,
@@ -113,10 +115,10 @@ class OovvuuNavigaPluginComponent extends Component {
   }
 
   /**
-     * Sets the authentication state.
-     *
-     * @param {Boolean} authState True or false.
-     */
+   * Sets the authentication state.
+   *
+   * @param {Boolean} authState True or false.
+   */
   setAuthState(authState) {
     this.extendState({
       authenticated: Boolean(authState),
@@ -124,8 +126,8 @@ class OovvuuNavigaPluginComponent extends Component {
   }
 
   /**
-     * Clears the authentication state.
-     */
+   * Clears the authentication state.
+   */
   clearAuthState() {
     this.extendState({
       authenticated: null,
@@ -133,10 +135,10 @@ class OovvuuNavigaPluginComponent extends Component {
   }
 
   /**
-     * Sets the authentication error state.
-     *
-     * @param {object} error Error object.
-     */
+   * Sets the authentication error state.
+   *
+   * @param {object} error Error object.
+   */
   setAuthErrorState(error) {
     this.extendState({
       authenticationError: error,
@@ -144,8 +146,8 @@ class OovvuuNavigaPluginComponent extends Component {
   }
 
   /**
-     * Clears the authentication error state.
-     */
+   * Clears the authentication error state.
+   */
   clearAuthErrorState() {
     this.extendState({
       authenticationError: null,
@@ -153,10 +155,10 @@ class OovvuuNavigaPluginComponent extends Component {
   }
 
   /**
-     * Sets genres.
-     *
-     * @param {Array} genres An array of genres.
-     */
+   * Sets genres.
+   *
+   * @param {Array} genres An array of genres.
+   */
   setGenres(genres) {
     this.extendState({
       genres,
@@ -164,10 +166,10 @@ class OovvuuNavigaPluginComponent extends Component {
   }
 
   /**
-     * Sets providers.
-     *
-     * @param {Array} providers An array of providers.
-     */
+   * Sets providers.
+   *
+   * @param {Array} providers An array of providers.
+   */
   setProviders(providers) {
     this.extendState({
       providers,
@@ -175,17 +177,15 @@ class OovvuuNavigaPluginComponent extends Component {
   }
 
   /**
-     * Get based components based on authentication.
-     *
-     * @param $$
-     * @return Components.
-     */
+   * Get based components based on authentication.
+   *
+   * @param $$
+   * @return Components.
+   */
   getAuthComponents($$) {
     const components = [];
     const userAuth = $$('div')
       .addClass(styles.userAuth);
-
-    console.log(this.state.authenticated);
 
     // Not authenticated.
     if (this.state.authenticated === false) {
@@ -226,11 +226,11 @@ class OovvuuNavigaPluginComponent extends Component {
   }
 
   /**
-     * Render method is called whenever there's a change in state or props
-     *
-     * @param $$
-     * @return Components.
-     */
+   * Render method is called whenever there's a change in state or props
+   *
+   * @param $$
+   * @return Components.
+   */
   render($$) {
     const header = $$('div')
       .addClass(styles.header)
