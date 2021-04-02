@@ -25,9 +25,7 @@ class SearchForm extends Component {
   /* eslint-disable-next-line class-methods-use-this */
   getInitialState() {
     return {
-      keywords: [
-        'test',
-      ],
+      keywords: [],
     };
   }
 
@@ -105,7 +103,7 @@ class SearchForm extends Component {
       .addClass(styles.form)
       .on('submit', (event) => {
         event.preventDefault();
-        this.props.handleInputSubmit();
+        this.props.handleInputSubmit(this.state.keywords);
       })
       // Add child components.
       .append([InputWrapper, Filters]);

@@ -134,10 +134,11 @@ class SearchWrapper extends Component {
 
   /**
    * Handles the input search submission.
+   *
+   * @param {Array} keywords An array of keywords to match.
    */
-  handleInputSubmit() {
+  handleInputSubmit(keywords) {
     const filterEls = {
-      keywordMatch: 'oovvuu-video-search-button',
       genre: 'oovvuu-video-search-filter-genres',
       provider: 'oovvuu-video-search-filter-providers',
     };
@@ -153,8 +154,8 @@ class SearchWrapper extends Component {
       }
     });
 
-    // Update the keywordMatch filter to be an array.
-    filters.keywordMatch = filters.keywordMatch.split(' ');
+    // Set the keywords.
+    filters.keywordMatch = keywords;
 
     // Handle the search with filters.
     if (filters) {
