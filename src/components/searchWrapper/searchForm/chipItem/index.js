@@ -1,4 +1,5 @@
 import { Component } from 'substance';
+import * as styles from './chipItem.scss';
 
 class ChipItem extends Component {
   /**
@@ -14,7 +15,9 @@ class ChipItem extends Component {
     const textId = keyword.replace(/\s/g, '-');
     const buttonId = `remove-${textId}`;
 
-    const Container = $$('div');
+    const Container = $$('div')
+      .addClass(styles.user)
+      .addClass(styles.item);
 
     // Screen-reader label.
     const Span = $$('span')

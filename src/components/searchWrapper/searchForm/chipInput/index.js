@@ -1,4 +1,5 @@
 import { Component } from 'substance';
+import * as styles from './chipInput.scss';
 import keyCodes from '../../../../utils/keyCodes';
 
 class ChipInput extends Component {
@@ -44,7 +45,9 @@ class ChipInput extends Component {
    * @param {string} keyword A new keyword.
    */
   addToKeywords(keyword) {
-    this.props.addKeyword(keyword);
+    if (keyword) {
+      this.props.addKeyword(keyword);
+    }
   }
 
   /**
@@ -55,14 +58,16 @@ class ChipInput extends Component {
    */
   render($$) {
     const Label = $$('label')
-      .attr('for', 'oovvuu-video-search-button');
+      .attr('for', 'oovvuu-video-search-button')
+      .addClass(styles.inputItem);
 
     const Input = $$('input')
       .attr('aria-label', this.getLabel('Search'))
       .attr('placeholder', 'Search Video Library')
       .attr('autoComplete', 'off')
-      .addClass('dw-form-control')
-      .setId('oovvuu-video-search-button');
+      .setId('oovvuu-video-search-button')
+      .addClass(styles.input)
+      .addClass('panel-shadow');
 
     // Disable input until filters are loaded.
     if (this.props.loadingFilters) {

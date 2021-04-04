@@ -74,12 +74,6 @@ class SearchForm extends Component {
       removeKeyword: this.removeKeyword,
     });
 
-    const SubmitButton = $$('button')
-      .attr('aria-label', this.getLabel('Submit'))
-      .attr('type', 'submit')
-      .addClass(styles.submit)
-      .append($$('i').addClass('fa fa-search'));
-
     const InputWrapper = $$('div')
       .addClass(styles.wrapper);
 
@@ -90,7 +84,17 @@ class SearchForm extends Component {
       });
     }
 
-    InputWrapper.append([Input, SubmitButton]);
+    InputWrapper.append(Input);
+
+    const SubmitButton = $$('button')
+      .attr('aria-label', this.getLabel('Submit'))
+      .attr('type', 'submit')
+      .addClass(styles.submit)
+      .append($$('i').addClass('fa fa-search'));
+
+    const SearchWrapper = $$('div')
+      .addClass(styles.form);
+    SearchWrapper.append([InputWrapper, SubmitButton]);
 
     const Filters = $$(SearchFilters, {
       genres: this.props.genres,
@@ -100,13 +104,12 @@ class SearchForm extends Component {
       .addClass(styles.filters);
 
     return $$('form')
-      .addClass(styles.form)
       .on('submit', (event) => {
         event.preventDefault();
         this.props.handleInputSubmit(this.state.keywords);
       })
       // Add child components.
-      .append([InputWrapper, Filters]);
+      .append([SearchWrapper, Filters]);
   }
 }
 
