@@ -1,40 +1,49 @@
 .form {
-    display: grid;
+  display: grid;
+  grid-column-gap: rem(10);
+  grid-template-columns: 1fr rem(36);
 }
 
 .wrapper {
-    display: flex;
-    margin-bottom: rem(20);
+  align-items: center;
+  border: 1px solid var(--oovvuu-color-gray-dark);
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: rem(20);
+  min-height: rem(40);
+  padding: rem(4 6);
 }
 
 .filters {
-    display: grid;
-    grid-gap: rem(20);
-    grid-template-columns: repeat(2, 1fr);
-    margin-bottom: rem(10);
+  display: grid;
+  grid-gap: rem(20);
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: rem(10);
 
-    select {
-        border: 1px solid var(--oovvuu-color-gray-dark);
-        color: var(--oovvuu-color-gray);
-        padding: rem(7);
-    }
+  select {
+    border: 1px solid var(--oovvuu-color-gray-dark);
+    color: var(--oovvuu-color-gray);
+    padding: rem(7);
+  }
 }
 
 .input {
-    composes: panel-shadow from '../../../scss/shared/theme.scss';
-    composes: rounded from '../../../scss/shared/theme.scss';
-    flex: 1;
-    margin-right: rem(5);
+  flex: 1;
+  margin-right: rem(5);
 }
 
 .submit {
-    align-items: center;
-    background-color: var(--oovvuu-color-theme);
-    color: var(--oovvuu-color-white);
-    composes: panel-shadow from '../../../scss/shared/theme.scss';
-    composes: rounded from '../../../scss/shared/theme.scss';
-    display: flex;
-    height: rem(40);
-    justify-content: center;
-    width: rem(40);
+  align-items: center;
+  background-color: var(--oovvuu-color-theme);
+  color: var(--oovvuu-color-white);
+  composes: panel-shadow from '../../../scss/shared/theme.scss';
+  composes: rounded from '../../../scss/shared/theme.scss';
+  display: flex;
+  height: rem(40);
+  justify-content: center;
+  width: rem(40);
+
+  &:focus {
+    outline: -webkit-focus-ring-color auto 1px;
+  }
 }

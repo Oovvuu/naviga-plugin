@@ -1,4 +1,5 @@
 import { Component } from 'substance';
+import * as styles from './chipInput.scss';
 import keyCodes from '../../../../utils/keyCodes';
 
 class ChipInput extends Component {
@@ -14,6 +15,25 @@ class ChipInput extends Component {
     this.addToKeywords = this.addToKeywords.bind(this);
   }
 
+  didMount() {
+    this.handleFocusEl();
+  }
+
+  /**
+   * Sets the focus to the input field based on prop.
+   */
+  handleFocusEl() {
+    if (!this.props.focus) {
+      return;
+    }
+
+    const inputEl = document.getElementById('oovvuu-video-search-input');
+
+    if (inputEl) {
+      inputEl.focus();
+    }
+  }
+
   /**
    * Converts the input value with the TAB or Return key.
    *
@@ -24,16 +44,22 @@ class ChipInput extends Component {
     const { keyCode } = event;
 
     if ([TAB, RETURN].includes(keyCode)) {
-      event.preventDefault();
-
-      const inputEl = document.getElementById('oovvuu-video-search-button');
+      const inputEl = document.getElementById('oovvuu-video-search-input');
 
       if (inputEl) {
-        // Add to keywords.
-        this.addToKeywords(inputEl.value);
+        if (inputEl.value !== '') {
+          event.preventDefault();
 
-        // Clear current selection.
-        inputEl.value = '';
+          // Add to keywords.
+          this.addToKeywords(inputEl.value);
+        } else if (TAB === keyCode && !event.shiftKey) {
+          const submitEl = document.getElementById('oovvuu-video-search-submit-button');
+
+          if (submitEl) {
+            event.preventDefault();
+            submitEl.focus();
+          }
+        }
       }
     }
   }
@@ -44,7 +70,9 @@ class ChipInput extends Component {
    * @param {string} keyword A new keyword.
    */
   addToKeywords(keyword) {
-    this.props.addKeyword(keyword);
+    if (keyword) {
+      this.props.addKeyword(keyword);
+    }
   }
 
   /**
@@ -55,17 +83,19 @@ class ChipInput extends Component {
    */
   render($$) {
     const Label = $$('label')
-      .attr('for', 'oovvuu-video-search-button');
+      .attr('for', 'oovvuu-video-search-input')
+      .addClass(styles.inputItem);
 
     const Input = $$('input')
       .attr('aria-label', this.getLabel('Search'))
       .attr('placeholder', 'Search Video Library')
       .attr('autoComplete', 'off')
-      .addClass('dw-form-control')
-      .setId('oovvuu-video-search-button');
+      .setId('oovvuu-video-search-input')
+      .addClass(styles.input)
+      .addClass('panel-shadow');
 
     // Disable input until filters are loaded.
-    if (this.props?.loadingFilters) {
+    if (this.props.loadingFilters) {
       Input.attr('disabled', true);
       Input.attr('placeholder', 'Loading filters...');
     }

@@ -256,8 +256,8 @@ class OovvuuNavigaPluginComponent extends Component {
 
     return container.append(
       $$(SearchWrapper, {
-        genres: this.state.genres,
-        providers: this.state.providers,
+        genres: this.state.genres ?? [],
+        providers: this.state.providers ?? [],
       }),
     );
   }

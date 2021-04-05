@@ -22,10 +22,9 @@ class SearchForm extends Component {
    *
    * @returns {object} Component state.
    */
-  /* eslint-disable-next-line class-methods-use-this */
   getInitialState() {
     return {
-      keywords: [],
+      keywords: this.props.initialKeywords ?? [],
     };
   }
 
@@ -69,16 +68,11 @@ class SearchForm extends Component {
    */
   render($$) {
     const Input = $$(ChipInput, {
-      loadingFilters: this.props?.genres?.length === 0 || this.props?.providers?.length === 0,
+      loadingFilters: this.props.genres.length === 0 || this.props.providers.length === 0,
       addKeyword: this.addKeyword,
       removeKeyword: this.removeKeyword,
+      focus: this.state.keywords.length !== 0,
     });
-
-    const SubmitButton = $$('button')
-      .attr('aria-label', this.getLabel('Submit'))
-      .attr('type', 'submit')
-      .addClass(styles.submit)
-      .append($$('i').addClass('fa fa-search'));
 
     const InputWrapper = $$('div')
       .addClass(styles.wrapper);
@@ -90,7 +84,18 @@ class SearchForm extends Component {
       });
     }
 
-    InputWrapper.append([Input, SubmitButton]);
+    InputWrapper.append(Input);
+
+    const SubmitButton = $$('button')
+      .attr('aria-label', this.getLabel('Submit'))
+      .attr('type', 'submit')
+      .setId('oovvuu-video-search-submit-button')
+      .addClass(styles.submit)
+      .append($$('i').addClass('fa fa-search'));
+
+    const SearchWrapper = $$('div')
+      .addClass(styles.form);
+    SearchWrapper.append([InputWrapper, SubmitButton]);
 
     const Filters = $$(SearchFilters, {
       genres: this.props.genres,
@@ -100,13 +105,12 @@ class SearchForm extends Component {
       .addClass(styles.filters);
 
     return $$('form')
-      .addClass(styles.form)
       .on('submit', (event) => {
         event.preventDefault();
         this.props.handleInputSubmit(this.state.keywords);
       })
       // Add child components.
-      .append([InputWrapper, Filters]);
+      .append([SearchWrapper, Filters]);
   }
 }
 

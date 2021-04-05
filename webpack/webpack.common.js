@@ -35,6 +35,7 @@ module.exports = {
             loader: 'sass-resources-loader',
             options: {
               resources: [
+                'core/_terms.scss',
                 'core/_utilities.scss',
                 'core/_typography.scss',
               ].map((file) => path.join(__dirname, `../src/scss/${file}`)),
