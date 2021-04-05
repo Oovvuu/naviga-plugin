@@ -15,6 +15,25 @@ class ChipInput extends Component {
     this.addToKeywords = this.addToKeywords.bind(this);
   }
 
+  didMount() {
+    this.handleFocusEl();
+  }
+
+  /**
+   * Sets the focus to the input field based on prop.
+   */
+  handleFocusEl() {
+    if (!this.props.focus) {
+      return;
+    }
+
+    const inputEl = document.getElementById('oovvuu-video-search-input');
+
+    if (inputEl) {
+      inputEl.focus();
+    }
+  }
+
   /**
    * Converts the input value with the TAB or Return key.
    *
@@ -25,16 +44,22 @@ class ChipInput extends Component {
     const { keyCode } = event;
 
     if ([TAB, RETURN].includes(keyCode)) {
-      const inputEl = document.getElementById('oovvuu-video-search-button');
+      const inputEl = document.getElementById('oovvuu-video-search-input');
 
-      if (inputEl && inputEl.value !== '') {
-        event.preventDefault();
+      if (inputEl) {
+        if (inputEl.value !== '') {
+          event.preventDefault();
 
-        // Add to keywords.
-        this.addToKeywords(inputEl.value);
+          // Add to keywords.
+          this.addToKeywords(inputEl.value);
+        } else if (TAB === keyCode) {
+          const submitEl = document.getElementById('oovvuu-video-search-submit-button');
 
-        // Clear current selection.
-        inputEl.value = '';
+          if (submitEl) {
+            event.preventDefault();
+            submitEl.focus();
+          }
+        }
       }
     }
   }
@@ -58,14 +83,14 @@ class ChipInput extends Component {
    */
   render($$) {
     const Label = $$('label')
-      .attr('for', 'oovvuu-video-search-button')
+      .attr('for', 'oovvuu-video-search-input')
       .addClass(styles.inputItem);
 
     const Input = $$('input')
       .attr('aria-label', this.getLabel('Search'))
       .attr('placeholder', 'Search Video Library')
       .attr('autoComplete', 'off')
-      .setId('oovvuu-video-search-button')
+      .setId('oovvuu-video-search-input')
       .addClass(styles.input)
       .addClass('panel-shadow');
 

@@ -71,6 +71,7 @@ class SearchForm extends Component {
       loadingFilters: this.props.genres.length === 0 || this.props.providers.length === 0,
       addKeyword: this.addKeyword,
       removeKeyword: this.removeKeyword,
+      focus: this.state.keywords.length !== 0,
     });
 
     const InputWrapper = $$('div')
@@ -88,6 +89,7 @@ class SearchForm extends Component {
     const SubmitButton = $$('button')
       .attr('aria-label', this.getLabel('Submit'))
       .attr('type', 'submit')
+      .setId('oovvuu-video-search-submit-button')
       .addClass(styles.submit)
       .append($$('i').addClass('fa fa-search'));
 

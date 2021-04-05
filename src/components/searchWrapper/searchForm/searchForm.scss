@@ -42,4 +42,8 @@
   height: rem(40);
   justify-content: center;
   width: rem(40);
+
+  &:focus {
+    outline: -webkit-focus-ring-color auto 1px;
+  }
 }
