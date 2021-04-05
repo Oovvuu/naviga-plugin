@@ -25,11 +25,11 @@ class ChipInput extends Component {
     const { keyCode } = event;
 
     if ([TAB, RETURN].includes(keyCode)) {
-      event.preventDefault();
-
       const inputEl = document.getElementById('oovvuu-video-search-button');
 
-      if (inputEl) {
+      if (inputEl && inputEl.value !== '') {
+        event.preventDefault();
+
         // Add to keywords.
         this.addToKeywords(inputEl.value);
 

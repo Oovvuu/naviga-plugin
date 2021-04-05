@@ -19,6 +19,7 @@
   button {
     @include button-reset;
     cursor: pointer;
+    content: '../../../assets/icon/close.svg';
     height: rem(12);
     width: rem(12);
 

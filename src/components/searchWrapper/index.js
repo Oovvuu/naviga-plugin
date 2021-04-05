@@ -158,9 +158,7 @@ class SearchWrapper extends Component {
     filters.keywordMatch = keywords;
 
     // Handle the search with filters.
-    if (filters) {
-      this.handleVideoSearch(filters);
-    }
+    this.handleVideoSearch(filters);
   }
 
   /**
@@ -179,6 +177,7 @@ class SearchWrapper extends Component {
         genres: this.props.genres,
         providers: this.props.providers,
         filters: this.state.filters,
+        initialKeywords: this.state.filters.keywordMatch ?? [],
       }),
     );
 

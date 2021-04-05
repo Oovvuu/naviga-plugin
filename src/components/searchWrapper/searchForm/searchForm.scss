@@ -5,10 +5,8 @@
 }
 
 .wrapper {
-  composes: panel-shadow from '../../../scss/shared/theme.scss';
-  composes: rounded from '../../../scss/shared/theme.scss';
   align-items: center;
-  border-radius: rem(4);
+  border: 1px solid var(--oovvuu-color-gray-dark);
   display: flex;
   flex-wrap: wrap;
   margin-bottom: rem(20);
@@ -30,8 +28,6 @@
 }
 
 .input {
-  composes: panel-shadow from '../../../scss/shared/theme.scss';
-  composes: rounded from '../../../scss/shared/theme.scss';
   flex: 1;
   margin-right: rem(5);
 }

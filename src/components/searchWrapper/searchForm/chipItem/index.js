@@ -26,11 +26,13 @@ class ChipItem extends Component {
       .setId(textId);
     Container.append(Span);
 
+    const CloseIconHtml = '<svg height="12" viewBox="0 0 18 18" width="12" xmlns="http://www.w3.org/2000/svg"><path d="m18 1.80019284-1.8001928-1.80019284-7.1998072 7.19980716-7.19980716-7.19980716-1.80019284 1.80019284 7.19980716 7.19980716-7.19980716 7.1998072 1.80019284 1.8001928 7.19980716-7.1998072 7.1998072 7.1998072 1.8001928-1.8001928-7.1998072-7.1998072z" fill-rule="evenodd"/></svg>';
+
     const Button = $$('button')
       .attr('type', 'button')
       .attr('aria-label', this.getLabel('Remove'))
       .attr('aria-labelledby', `${buttonId} ${textId}`)
-      .text('x');
+      .html(CloseIconHtml);
 
     Button.on('click', () => {
       this.props.removeKeyword(keyword);

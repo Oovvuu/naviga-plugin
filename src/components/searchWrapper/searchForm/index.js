@@ -22,10 +22,9 @@ class SearchForm extends Component {
    *
    * @returns {object} Component state.
    */
-  /* eslint-disable-next-line class-methods-use-this */
   getInitialState() {
     return {
-      keywords: [],
+      keywords: this.props.initialKeywords ?? [],
     };
   }
 
