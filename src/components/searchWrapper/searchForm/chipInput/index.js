@@ -52,7 +52,7 @@ class ChipInput extends Component {
 
           // Add to keywords.
           this.addToKeywords(inputEl.value);
-        } else if (TAB === keyCode) {
+        } else if (TAB === keyCode && !event.shiftKey) {
           const submitEl = document.getElementById('oovvuu-video-search-submit-button');
 
           if (submitEl) {
