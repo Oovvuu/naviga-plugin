@@ -12,5 +12,18 @@ Thumbs.db
 .idea
 .vscode
 
-dist/
 node_modules/
+
+# Source Files
+src/
+webpack/
+images/
+.babelrc
+.editorconfig
+.eslintrc.js
+package.json
+package-lock.json
+postcss.config.js
+
+# Release script
+release.sh
