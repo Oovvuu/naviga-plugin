@@ -56,7 +56,7 @@ const getLatestVideos = (filters) => {
     input: {
       limit: 25,
       sort: {
-        sort: 'id',
+        sort: 'publishedAt',
         ascending: false,
       },
       filter: {
